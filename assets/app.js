@@ -6,7 +6,10 @@
  */
 
 // any CSS you import will output into a single css file (app.css in this case)
-import './styles/app.css';
+import './styles/app.scss';
 
-// start the Stimulus application
-// import './bootstrap';
+// Import some bootstrap js plugins
+// import { Tooltip, Toast, Popover } from 'bootstrap';
+
+// Import react js application by its default page index.js
+import './js';
