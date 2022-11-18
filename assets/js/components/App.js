@@ -4,13 +4,14 @@ import Game from "./game/Game";
 import Start from "./game/Start";
 import Scores from "./game/Scores";
 import GameData from "../services/GameData";
+import { useLocalStorage } from "../hooks/useLocalStorage";
 
 export const GameContext = createContext();
 
 function App() {
   const [isStarted, setIsStarted] = useState(false);
   const [score, setScore] = useState(0);
-  const [highScore, setHighScore] = useState(0);
+  const [highScore, setHighScore] = useLocalStorage("moviegame_highscore", 0);
 
   if (isStarted) {
     // Launch test set
