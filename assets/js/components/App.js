@@ -1,5 +1,4 @@
-import React from "react";
-import { useState, useEffect, createContext } from "react";
+import React, { useState, useEffect, createContext } from "react";
 import Game from "./game/Game";
 import Start from "./game/Start";
 import Scores from "./game/Scores";
@@ -11,6 +10,7 @@ export const GameContext = createContext();
 function App() {
   const [isStarted, setIsStarted] = useState(false);
   const [score, setScore] = useState(0);
+  const [looseScore, setLooseScore] = useState(0);
   const [highScore, setHighScore] = useLocalStorage("moviegame_highscore", 0);
 
   if (isStarted) {
@@ -22,6 +22,7 @@ function App() {
     if (isStarted) {
       // Init current game score
       setScore(0);
+      setLooseScore(0);
     } else {
       if (score > highScore) {
         // current game finised and beat high score
@@ -32,21 +33,31 @@ function App() {
 
   return (
     <div className="container align-center">
-      <header className="mb-5">
+      <header className="mb-4">
         <h1 className="text-bg-info text-center p-3">
           Test de connaissance cinématographique
         </h1>
-        <Scores score={score} highScore={highScore} />
       </header>
       <main className="text-center">
+        <Scores
+          score={score}
+          looseScore={looseScore}
+          highScore={highScore}
+          isStarted={isStarted}
+        />
         <GameContext.Provider
           value={{
             start: () => setIsStarted(true),
             stop: () => setIsStarted(false),
             win: () => setScore((score) => score + 1),
+            loose: () => setLooseScore((score) => score + 1),
           }}
         >
-          {isStarted ? <Game /> : <Start />}
+          {isStarted ? (
+            <Game />
+          ) : (
+            <Start title={score + looseScore > 0 ? "Rejouer" : "Jouer"} />
+          )}
         </GameContext.Provider>
       </main>
       <footer className=""></footer>

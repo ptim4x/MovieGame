@@ -6,7 +6,7 @@ export function useCountdown(default_count) {
   // componentDidMount like
   useEffect(() => {
     const interval = setInterval(() => {
-      setCountdown((countdown) => (countdown > 0 ? countdown - 1 : countdown));
+      setCountdown(countdown => countdown > 0 ? countdown - 1 : countdown);
     }, 1000);
     return () => clearInterval(interval);
   }, []);

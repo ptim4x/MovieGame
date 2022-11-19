@@ -1,10 +1,11 @@
 import React from "react";
 import useKeyDownRef from "../../hooks/useKeyDownRef";
+import config from "../../config.json";
 
 const ButtonsReply = (props) => {
   // Arrow left and right keyboard shortcut to reply true or false
-  const replyTrueRef = useKeyDownRef("ArrowLeft");
-  const replyFalseRef = useKeyDownRef("ArrowRight");
+  const replyTrueRef = useKeyDownRef(config.GAME_SHORTCUT.YES);
+  const replyFalseRef = useKeyDownRef(config.GAME_SHORTCUT.NO);
 
   return (
     <section className="d-flex justify-content-evenly mt-4">

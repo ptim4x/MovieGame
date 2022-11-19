@@ -1,12 +1,13 @@
 import React, { useContext } from "react";
 import { GameContext } from "../App";
 import useKeyDownRef from "../../hooks/useKeyDownRef";
+import config from "../../config.json";
 
-const Start = () => {
+const Start = (props) => {
   const game_context = useContext(GameContext);
 
   // Space or Enter keyboard shortcut to launch game
-  const playRef = useKeyDownRef([" ", "Enter"]);
+  const playRef = useKeyDownRef(config.GAME_SHORTCUT.PLAY);
 
   return (
     <section className="d-flex justify-content-center mt-4">
@@ -16,7 +17,7 @@ const Start = () => {
         className="btn btn-lg btn-secondary col-6 py-5"
         onClick={game_context.start}
       >
-        Jouer
+        {props.title}
       </button>
     </section>
   );

@@ -1,0 +1,8 @@
+{
+  "GAME_TIMEOUT": "60",
+  "GAME_SHORTCUT": {
+    "PLAY": [" ", "Enter"],
+    "YES": "ArrowLeft",
+    "NO": "ArrowRight"
+  }
+}
