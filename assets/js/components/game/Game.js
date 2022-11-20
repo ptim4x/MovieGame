@@ -19,19 +19,19 @@ const Game = () => {
   // componentDidMount like
   useEffect(() => {
     // Set the first question
-    setQuestion(GameData.getNextQuestion());
+    setQuestion(GameData.getNewQuestion());
   }, []);
 
   const handleReply = (reply, hash) => {
     // Request response
-    if (GameData.isRight(reply, hash)) {
+    if (GameData.isRightAnswer(reply, hash)) {
       game_context.win();
     } else {
       game_context.loose();
     }
 
     // Request new question
-    const question = GameData.getNextQuestion();
+    const question = GameData.getNewQuestion();
     setQuestion(question);
   };
 

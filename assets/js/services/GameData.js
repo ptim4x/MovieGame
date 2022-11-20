@@ -1,3 +1,8 @@
+/**
+ * Service class to manage data with API requests
+ * 
+ * For the moment, there's no api call but only fake data set
+ */
 export default class GameData {
   /**
    * Question list data test
@@ -51,24 +56,18 @@ export default class GameData {
       // ...
     };
 
-  static questionGame = null;
-  static index;
-
-  static start() {
-    const questionListCopy = [...GameData.questionList];
-    GameData.questionGame = GameData.shuffleArray(questionListCopy);
-    GameData.index = 0;
-  }
-
   static shuffleArray = (array) =>
     array
       .map((a) => ({ sort: Math.random(), value: a }))
       .sort((a, b) => a.sort - b.sort)
       .map((a) => a.value);
 
-  static getNextQuestion = () => GameData.questionGame[GameData.index++];
+  static getNewQuestion = () => {
+    GameData.questionList = GameData.shuffleArray(GameData.questionList);
+    return GameData.questionList[0];
+  }
 
-  static isRight(reply, hash) {
+  static isRightAnswer = (reply, hash) => {
     return GameData.responseList[hash] == reply;
   }
 }

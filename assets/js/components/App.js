@@ -17,11 +17,6 @@ const App = () => {
   const [looseScore, setLooseScore] = useState(0);
   const [highScore, setHighScore] = useLocalStorage("moviegame_highscore", 0);
 
-  if (isStarted) {
-    // Launch test set
-    GameData.start();
-  }
-
   useEffect(() => {
     if (isStarted) {
       // Init current game score
