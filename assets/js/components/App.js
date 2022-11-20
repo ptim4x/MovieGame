@@ -3,11 +3,15 @@ import Game from "./game/Game";
 import Start from "./game/Start";
 import Scores from "./game/Scores";
 import GameData from "../services/GameData";
-import { useLocalStorage } from "../hooks/useLocalStorage";
+import useLocalStorage from "../hooks/useLocalStorage";
 
+/** Create useful game context */
 export const GameContext = createContext();
 
-function App() {
+/**
+ * Main App component
+ */
+const App = () => {
   const [isStarted, setIsStarted] = useState(false);
   const [score, setScore] = useState(0);
   const [looseScore, setLooseScore] = useState(0);

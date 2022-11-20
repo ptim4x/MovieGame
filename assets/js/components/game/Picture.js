@@ -1,5 +1,8 @@
 import React from "react";
 
+/**
+ * Picture display component
+ */
 const Picture = (props) => (
   <div className="col-md-4 px-0">
     <img

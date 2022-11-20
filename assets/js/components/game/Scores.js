@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from "react";
 import config from "../../config.json";
 
+/**
+ * Scores and round informations display component
+ */
 const Scores = (props) => {
   const [info, setInfo] = useState("");
   const [infoColor, setInfoColor] = useState("info");

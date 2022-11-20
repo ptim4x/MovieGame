@@ -1,8 +1,11 @@
 import React, { useEffect, useContext } from "react";
-import { useCountdown } from "../../hooks/useCountdown";
+import useCountdown from "../../hooks/useCountdown";
 import { GameContext } from "../App";
 import config from "../../config.json";
 
+/**
+ * Countdown timer component
+ */
 const Timer = () => {
   const [countdown] = useCountdown(config.GAME_TIMEOUT);
 

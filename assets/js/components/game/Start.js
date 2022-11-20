@@ -3,10 +3,13 @@ import { GameContext } from "../App";
 import useKeyDownRef from "../../hooks/useKeyDownRef";
 import config from "../../config.json";
 
+/**
+ * Start/Restart game component
+ */
 const Start = (props) => {
   const game_context = useContext(GameContext);
 
-  // Space or Enter keyboard shortcut to launch game
+  // keyboard shortcut to launch game (default Space or Enter)
   const playRef = useKeyDownRef(config.GAME_SHORTCUT.PLAY);
 
   return (

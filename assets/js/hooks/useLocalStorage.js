@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 
-function getLocalStorageOrDefault(key, defaultValue) {
+const getLocalStorageOrDefault = (key, defaultValue) => {
   const stored = localStorage.getItem(key);
   if (!stored) {
     return defaultValue;
@@ -8,7 +8,14 @@ function getLocalStorageOrDefault(key, defaultValue) {
   return JSON.parse(stored);
 }
 
-export function useLocalStorage(key, defaultValue) {
+/**
+ * Hook for local storage value
+ * 
+ * @param {string} key the local storage string key
+ * @param {string} defaultValue default value if key not exists into local storage
+ * @returns array with value and setter
+ */
+const useLocalStorage = (key, defaultValue) => {
   const [value, setValue] = useState(
     getLocalStorageOrDefault(key, defaultValue)
   );
@@ -19,3 +26,5 @@ export function useLocalStorage(key, defaultValue) {
 
   return [value, setValue];
 }
+
+export default useLocalStorage;

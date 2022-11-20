@@ -2,8 +2,11 @@ import React from "react";
 import useKeyDownRef from "../../hooks/useKeyDownRef";
 import config from "../../config.json";
 
+/**
+ * Component for answering game questions
+ */
 const ButtonsReply = (props) => {
-  // Arrow left and right keyboard shortcut to reply true or false
+  // Keyboard shortcut to reply (default Arrow left=true and right=false)
   const replyTrueRef = useKeyDownRef(config.GAME_SHORTCUT.YES);
   const replyFalseRef = useKeyDownRef(config.GAME_SHORTCUT.NO);
 

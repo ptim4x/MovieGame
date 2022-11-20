@@ -5,7 +5,13 @@ import GameData from "../../services/GameData";
 import { GameContext } from "../App";
 import Timer from "./Timer";
 
-function Game() {
+/**
+ * Started game component with nested components :
+ *  - Picture (actor and movie)
+ *  - ButtonsReply for answering
+ *  - Timer countdown
+ */
+const Game = () => {
   const [question, setQuestion] = useState(null);
 
   const game_context = useContext(GameContext);
