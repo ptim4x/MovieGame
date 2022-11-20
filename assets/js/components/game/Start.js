@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { GameContext } from "../App";
-import useKeyDownRef from "../../hooks/useKeyDownRef";
+import useKeyboardShortcutRef from "../../hooks/useKeyboardShortcutRef";
 import config from "../../config.json";
 
 /**
@@ -10,7 +10,7 @@ const Start = (props) => {
   const game_context = useContext(GameContext);
 
   // keyboard shortcut to launch game (default Space or Enter)
-  const playRef = useKeyDownRef(config.GAME_SHORTCUT.PLAY);
+  const playRef = useKeyboardShortcutRef(config.GAME_SHORTCUT.PLAY);
 
   return (
     <section className="d-flex justify-content-center mt-4">

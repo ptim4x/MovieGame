@@ -1,5 +1,5 @@
 import React from "react";
-import useKeyDownRef from "../../hooks/useKeyDownRef";
+import useKeyboardShortcutRef from "../../hooks/useKeyboardShortcutRef";
 import config from "../../config.json";
 
 /**
@@ -7,8 +7,8 @@ import config from "../../config.json";
  */
 const ButtonsReply = (props) => {
   // Keyboard shortcut to reply (default Arrow left=true and right=false)
-  const replyTrueRef = useKeyDownRef(config.GAME_SHORTCUT.YES);
-  const replyFalseRef = useKeyDownRef(config.GAME_SHORTCUT.NO);
+  const replyTrueRef = useKeyboardShortcutRef(config.GAME_SHORTCUT.YES);
+  const replyFalseRef = useKeyboardShortcutRef(config.GAME_SHORTCUT.NO);
 
   return (
     <section className="d-flex justify-content-evenly mt-4">
