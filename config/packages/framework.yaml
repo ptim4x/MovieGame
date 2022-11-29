@@ -17,6 +17,13 @@ framework:
     php_errors:
         log: true
 
+    http_client:
+        scoped_clients:
+            tmdb.client:
+                base_uri: '%tmdb.api.url%'
+                query:
+                    api_key: '%tmdb.api.key%'
+
 when@test:
     framework:
         test: true
