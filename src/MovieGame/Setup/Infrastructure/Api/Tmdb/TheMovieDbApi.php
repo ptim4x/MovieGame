@@ -111,9 +111,9 @@ class TheMovieDbApi implements MovieApiInterface
     /**
      * Popular actor filter from people.
      *
-     * @param array[] $people
+     * @param array<int, array<string, mixed>> $people
      *
-     * @return array[]
+     * @return array<int, array<string, mixed>>
      */
     private function filterActor(array $people): array
     {
