@@ -30,7 +30,6 @@ class TheMovieDbApi implements MovieApiInterface
 {
     public const PATH = '/3';
     public const ACTOR_DEPARTEMENT = 'Acting';
-    public const ACTOR_POPULARITY_MIN = 5;
 
     private SerializerInterface $movieSerializer;
     private SerializerInterface $peopleSerializer;
@@ -70,7 +69,7 @@ class TheMovieDbApi implements MovieApiInterface
     {
         $people = $this->call('person/popular', ['page' => $page])['results'];
 
-        $actors = $this->filterPopularActor($people);
+        $actors = $this->filterActor($people);
 
         return $this->peopleSerializer->deserialize(json_encode($actors), People::class.'[]', 'json');
     }
@@ -83,7 +82,7 @@ class TheMovieDbApi implements MovieApiInterface
     {
         $casting = $this->call("/movie/{$movieId}/credits")['cast'];
 
-        $actors = $this->filterPopularActor($casting);
+        $actors = $this->filterActor($casting);
 
         return $this->peopleSerializer->deserialize(json_encode($actors), People::class.'[]', 'json');
     }
@@ -116,14 +115,10 @@ class TheMovieDbApi implements MovieApiInterface
      *
      * @return People[]
      */
-    private function filterPopularActor(array $people): array
+    private function filterActor(array $people): array
     {
-        return array_filter(
-            $people,
-            function ($person) {
-                return self::ACTOR_DEPARTEMENT === $person['known_for_department']
-                && self::ACTOR_POPULARITY_MIN <= $person['popularity'];
-            }
-        );
+        $filterFn = fn ($person) => self::ACTOR_DEPARTEMENT === $person['known_for_department'];
+        
+        return array_filter($people, $filterFn);
     }
 }

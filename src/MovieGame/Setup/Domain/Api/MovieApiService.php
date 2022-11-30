@@ -49,14 +49,20 @@ class MovieApiService
     {
         $page = $this->moviePage->getNextPage();
         $movies = $this->movieApi->getPopularMovies($page);
+        $validMovies = [];
 
-        // Add Actors to each movie
+        // Add Actors to each movie and validate movies
         foreach ($movies as $movie) {
             $actors = $this->movieApi->getMovieActors($movie->getExternalId());
             $movie->setActors($actors);
+
+            // Add only valid movies
+            if($movie->isValid()) {
+                $validMovies[] = $movie;
+            }
         }
 
-        return $movies;
+        return $validMovies;
     }
 
     /**

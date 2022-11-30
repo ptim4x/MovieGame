@@ -18,6 +18,8 @@ namespace App\MovieGame\Setup\Domain\Shared;
  */
 class People
 {
+    public const ACTOR_POPULARITY_MIN = 5;
+
     /** People id (API side) */
     private int $external_id;
 
@@ -81,5 +83,20 @@ class People
     public function isSameAs(self $people): bool
     {
         return $this->external_id === $people->external_id;
+    }
+
+    /**
+     * Is the actor valid to be used for game ?
+     *
+     * @return boolean
+     */
+    public function isValid(): bool
+    {
+        // A minimum of popularity is required for an actor
+        if($this->getPopularity() < self::ACTOR_POPULARITY_MIN) {
+            return false;
+        }
+
+        return true;
     }
 }

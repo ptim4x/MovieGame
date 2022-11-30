@@ -18,6 +18,9 @@ namespace App\MovieGame\Setup\Domain\Shared;
  */
 class Movie
 {
+    /** A movie needs to have a least this number of popular actor */
+    private const ACTORS_BY_MOVIE_MIN = 3;
+        
     /** Movie id (API side) */
     private int $external_id;
 
@@ -101,8 +104,26 @@ class Movie
     /** @param People[] $actors */
     public function setActors(array $actors): self
     {
-        $this->actors = $actors;
+        // Filter only valid actors
+        $actors = array_filter($actors, fn ($actor) => $actor->isValid());
+        // don't preserve keys
+        $this->actors = [...$actors];
 
         return $this;
+    }
+
+    /**
+     * Is the movie complete and valid to be used for game ?
+     *
+     * @return boolean
+     */
+    public function isValid(): bool
+    {
+        // A minimum count of actor is required for a movie
+        if(count($this->getActors()) < self::ACTORS_BY_MOVIE_MIN) {
+            return false;
+        }
+
+        return true;
     }
 }
