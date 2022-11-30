@@ -8,7 +8,7 @@ declare(strict_types=1);
  * (c) Maxime Brignon <ptimax@lilo.org>
  */
 
-namespace App\MovieGame\Setup\Domain\Api;
+namespace App\MovieGame\Setup\Domain\Movie;
 
 /**
  * ApiResult class used as Api result helper.

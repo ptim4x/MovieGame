@@ -8,10 +8,9 @@ declare(strict_types=1);
  * (c) Maxime Brignon <ptimax@lilo.org>
  */
 
-namespace App\MovieGame\Setup\Domain\Api;
+namespace App\MovieGame\Setup\Domain\Movie;
 
-use App\MovieGame\Setup\Domain\Shared\Movie;
-use App\MovieGame\Setup\Domain\Shared\People;
+use App\MovieGame\Setup\Domain\Shared\RandomUnique;
 
 /**
  * Api domain service class for easy use of a movie Api.
@@ -19,10 +18,10 @@ use App\MovieGame\Setup\Domain\Shared\People;
 class MovieApiService
 {
     /** Api Movie page counter */
-    private ApiPage $moviePage;
+    private RandomUnique $moviePage;
 
     /** Api People page counter */
-    private ApiPage $peoplePage;
+    private RandomUnique $peoplePage;
 
     /** Paginated Api Movie data set */
     private ApiResult $movieSet;
@@ -32,8 +31,8 @@ class MovieApiService
 
     public function __construct(private MovieApiInterface $movieApi)
     {
-        $this->moviePage = new ApiPage(maxPage: 500);
-        $this->peoplePage = new ApiPage(maxPage: 100);
+        $this->moviePage = new RandomUnique(min: 1, max: 500);
+        $this->peoplePage = new RandomUnique(min: 1, max: 100);
 
         $this->movieSet = new ApiResult();
         $this->peopleSet = new ApiResult();
@@ -47,7 +46,7 @@ class MovieApiService
      */
     public function getMovies(): array
     {
-        $page = $this->moviePage->getNextPage();
+        $page = $this->moviePage->next();
         $movies = $this->movieApi->getPopularMovies($page);
         $validMovies = [];
 
@@ -75,7 +74,8 @@ class MovieApiService
         do {
             $movies = $this->getMovies();
             $this->movieSet->addResult($movies);
-        } while ($this->movieSet->getResultCount() < $setSize);
+        } 
+        while ($this->movieSet->getResultCount() < $setSize);
 
         return $this->movieSet->getResultLimited($setSize);
     }
@@ -88,10 +88,11 @@ class MovieApiService
     public function getPeopleSet(int $setSize): array
     {
         do {
-            $page = $this->peoplePage->getNextPage();
+            $page = $this->peoplePage->next();
             $people = $this->movieApi->getPopularPeople($page);
             $this->peopleSet->addResult($people);
-        } while ($this->peopleSet->getResultCount() < $setSize);
+        } 
+        while ($this->peopleSet->getResultCount() < $setSize);
 
         return $this->peopleSet->getResultLimited($setSize);
     }

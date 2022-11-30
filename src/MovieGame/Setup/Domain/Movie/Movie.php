@@ -8,7 +8,7 @@ declare(strict_types=1);
  * (c) Maxime Brignon <ptimax@lilo.org>
  */
 
-namespace App\MovieGame\Setup\Domain\Shared;
+namespace App\MovieGame\Setup\Domain\Movie;
 
 /**
  * Movie class as DTO/ValueObject.
@@ -110,6 +110,11 @@ class Movie
         $this->actors = [...$actors];
 
         return $this;
+    }
+
+    public function isSameAs(self $movie): bool
+    {
+        return $this->external_id === $movie->external_id;
     }
 
     /**

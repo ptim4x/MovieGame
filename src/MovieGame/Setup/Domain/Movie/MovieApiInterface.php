@@ -8,10 +8,7 @@ declare(strict_types=1);
  * (c) Maxime Brignon <ptimax@lilo.org>
  */
 
-namespace App\MovieGame\Setup\Domain\Api;
-
-use App\MovieGame\Setup\Domain\Shared\Movie;
-use App\MovieGame\Setup\Domain\Shared\People;
+namespace App\MovieGame\Setup\Domain\Movie;
 
 /**
  * Interface to be implemented by some Movie API

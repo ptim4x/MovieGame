@@ -10,9 +10,9 @@ declare(strict_types=1);
 
 namespace App\MovieGame\Setup\Infrastructure\Api\Tmdb;
 
-use App\MovieGame\Setup\Domain\Api\MovieApiInterface;
-use App\MovieGame\Setup\Domain\Shared\Movie;
-use App\MovieGame\Setup\Domain\Shared\People;
+use App\MovieGame\Setup\Domain\Movie\MovieApiInterface;
+use App\MovieGame\Setup\Domain\Movie\Movie;
+use App\MovieGame\Setup\Domain\Movie\People;
 use App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter\TmdbMovieNameConverter;
 use App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter\TmdbPeopleNameConverter;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
