@@ -15,8 +15,10 @@ use App\MovieGame\Setup\Domain\Movie\Movie;
 
 class QuestionService
 {
-    public function __construct(private string $env)
-    {
+    public function __construct(
+        private string $env,
+        private QuestionRepositoryInterface $questionRepository
+    ) {
     }
 
     /**
@@ -29,18 +31,25 @@ class QuestionService
     {
         $questionCreator = new QuestionCreator($movieSet, $actorSet);
 
+        // Generate entity Question set
+        $questions = [];
         $answerYes = $answerNo = 0;
         for ($i = 1; $i <= $setSize; ++$i) {
             $question = $questionCreator->create();
+            $questions[] = $question;
             $question->getAnswer() ? $answerYes++ : $answerNo++;
 
             if ('dev' === $this->env) {
                 echo "Question {$i} = ".$question->getActor()->getName().
                     ' play in '.$question->getMovie()->getTitle().
-                    ' => '.($question->getAnswer() ? 'YES' : 'NO') . "\n";
+                    ' => '.($question->getAnswer() ? 'YES' : 'NO')."\n";
             }
         }
 
+        // Store all Question
+        $this->questionRepository->storeMany($questions);
+
+        --$i;
         if ('dev' === $this->env) {
             echo "END: {$i} questions created ! {$answerYes} YES answers and {$answerNo} NO answers\n";
         } else {

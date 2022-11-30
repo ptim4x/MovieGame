@@ -28,5 +28,14 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
+    app.doctrine.question.repository:
+        class: App\MovieGame\Setup\Infrastructure\Storage\Doctrine\DoctrineQuestionRepository
+
     App\MovieGame\Setup\Domain\Question\QuestionService:
-        arguments: ['%kernel.environment%']
+        arguments: 
+            - '%kernel.environment%'
+            - '@app.doctrine.question.repository'
+
+    # the ``App\Util\Rot13Transformer`` service will be injected when
+    # an ``App\Util\TransformerInterface`` type-hint is detected
+    # App\MovieGame\Setup\Domain\Question\QuestionRepositoryInterface: '@app.doctrine.question.repository'
