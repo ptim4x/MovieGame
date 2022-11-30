@@ -25,3 +25,11 @@ services:
 
 ###> symfony/mercure-bundle ###
 ###< symfony/mercure-bundle ###
+
+###> doctrine/doctrine-bundle ###
+  database:
+    ports:
+      # postgress db port
+      - target: 5432
+        published: ${DB_PORT:-54321}
+###< doctrine/doctrine-bundle ###
