@@ -20,8 +20,11 @@ class Random
         return random_int($min, $max);
     }
 
-    public static function plouf($max = 2): bool
+    /**
+     * Generate a random boolean.
+     */
+    public static function bool(): bool
     {
-        return self::int(min: 1, max: $max) % 2 === 0;
+        return 0 === self::int(min: 0, max: 1) % 2;
     }
 }

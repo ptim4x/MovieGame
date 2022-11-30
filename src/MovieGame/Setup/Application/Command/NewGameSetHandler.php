@@ -10,7 +10,8 @@ declare(strict_types=1);
 
 namespace App\MovieGame\Setup\Application\Command;
 
-use App\MovieGame\Setup\Domain\Api\MovieApiService;
+use App\MovieGame\Setup\Domain\Movie\MovieApiService;
+use App\MovieGame\Setup\Domain\Question\QuestionService;
 use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 
 /**
@@ -19,19 +20,21 @@ use Symfony\Component\Messenger\Attribute\AsMessageHandler;
 #[AsMessageHandler]
 class NewGameSetHandler
 {
-    public function __construct(private MovieApiService $movieApiService)
-    {
+    public function __construct(
+        private MovieApiService $movieApiService,
+        private QuestionService $questionService,
+    ) {
     }
 
     public function __invoke(NewGameSetCommand $command): void
     {
         $questionSetSize = $command->getSetSize();
-        dump('$questionSetSize='.$questionSetSize);
+        echo "BEGIN: Create new game set create with {$questionSetSize} questions...\r\n";
 
-        $movies = $this->movieApiService->getMovieSet(40);
-        dump('count($movies)='.\count($movies));
+        $movies = $this->movieApiService->getMovieSet($questionSetSize);
 
-        $people = $this->movieApiService->getPeopleSet(40);
-        dump('count($people)='.\count($people));
+        $people = $this->movieApiService->getPeopleSet($questionSetSize);
+
+        $this->questionService->createGameSet($movies, $people, $questionSetSize);
     }
 }

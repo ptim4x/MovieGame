@@ -29,9 +29,11 @@ class RandomUnique
     {
         do {
             $ramdomNumber = Random::int($this->min, $this->max);
-        } 
-        while (\in_array($ramdomNumber, $this->numberHistory, true));
-        
+        } while (
+            \in_array($ramdomNumber, $this->numberHistory, true)
+            && \count($this->numberHistory) < $this->max
+        );
+
         $this->numberHistory[] = $ramdomNumber;
 
         return $ramdomNumber;
