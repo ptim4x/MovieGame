@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace App\MovieGame\Setup\Domain\Question;
 
+use App\MovieGame\Setup\Domain\Movie\Actor;
 use App\MovieGame\Setup\Domain\Movie\Movie;
-use App\MovieGame\Setup\Domain\Movie\People;
 
 class QuestionService
 {
@@ -22,12 +22,12 @@ class QuestionService
     /**
      * Create a set of question.
      *
-     * @param Movie[]  $movieSet
-     * @param People[] $peopleSet
+     * @param Movie[] $movieSet
+     * @param Actor[] $actorSet
      */
-    public function createGameSet(array $movieSet, array $peopleSet, int $setSize): void
+    public function createGameSet(array $movieSet, array $actorSet, int $setSize): void
     {
-        $questionCreator = new QuestionCreator($movieSet, $peopleSet);
+        $questionCreator = new QuestionCreator($movieSet, $actorSet);
 
         $answerYes = $answerNo = 0;
         for ($i = 0; $i < $setSize; ++$i) {

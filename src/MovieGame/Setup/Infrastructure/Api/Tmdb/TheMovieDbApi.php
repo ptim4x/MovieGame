@@ -10,11 +10,11 @@ declare(strict_types=1);
 
 namespace App\MovieGame\Setup\Infrastructure\Api\Tmdb;
 
+use App\MovieGame\Setup\Domain\Movie\Actor;
 use App\MovieGame\Setup\Domain\Movie\Movie;
 use App\MovieGame\Setup\Domain\Movie\MovieApiInterface;
-use App\MovieGame\Setup\Domain\Movie\People;
+use App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter\TmdbActorNameConverter;
 use App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter\TmdbMovieNameConverter;
-use App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter\TmdbPeopleNameConverter;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -32,7 +32,7 @@ class TheMovieDbApi implements MovieApiInterface
     public const ACTOR_DEPARTEMENT = 'Acting';
 
     private SerializerInterface $movieSerializer;
-    private SerializerInterface $peopleSerializer;
+    private SerializerInterface $actorSerializer;
 
     public function __construct(
         private HttpClientInterface $tmdbClient,
@@ -44,10 +44,10 @@ class TheMovieDbApi implements MovieApiInterface
             [new JsonEncoder()]
         );
 
-        // People Denormalize (array=>object) with parameter name modifying
-        $tmdbPeopleNormalizer = new ObjectNormalizer(null, new TmdbPeopleNameConverter());
-        $this->peopleSerializer = new Serializer(
-            [$tmdbPeopleNormalizer, new GetSetMethodNormalizer(), new ArrayDenormalizer()],
+        // Actor Denormalize (array=>object) with parameter name modifying
+        $tmdbActorNormalizer = new ObjectNormalizer(null, new TmdbActorNameConverter());
+        $this->actorSerializer = new Serializer(
+            [$tmdbActorNormalizer, new GetSetMethodNormalizer(), new ArrayDenormalizer()],
             [new JsonEncoder()]
         );
     }
@@ -63,19 +63,19 @@ class TheMovieDbApi implements MovieApiInterface
     }
 
     /**
-     * Make Api call for popular people.
+     * Make Api call for popular actor.
      */
-    public function getPopularPeople(int $page = 1): array
+    public function getPopularActor(int $page = 1): array
     {
-        $people = $this->call('person/popular', ['page' => $page])['results'];
+        $person = $this->call('person/popular', ['page' => $page])['results'];
 
-        $actors = $this->filterActor($people);
+        $actors = $this->filterActor($person);
 
-        return $this->peopleSerializer->deserialize(json_encode($actors), People::class.'[]', 'json');
+        return $this->actorSerializer->deserialize(json_encode($actors), Actor::class.'[]', 'json');
     }
 
     /**
-     * Make Api call for popular people
+     * Make Api call for popular actor
      * who perform in the movie with $movieId as Api movie id.
      */
     public function getMovieActors(?int $movieId): array
@@ -84,7 +84,7 @@ class TheMovieDbApi implements MovieApiInterface
 
         $actors = $this->filterActor($casting);
 
-        return $this->peopleSerializer->deserialize(json_encode($actors), People::class.'[]', 'json');
+        return $this->actorSerializer->deserialize(json_encode($actors), Actor::class.'[]', 'json');
     }
 
     /**
@@ -111,9 +111,9 @@ class TheMovieDbApi implements MovieApiInterface
     /**
      * Popular actor filter from people.
      *
-     * @param People[] $people
+     * @param array[] $people
      *
-     * @return People[]
+     * @return array[]
      */
     private function filterActor(array $people): array
     {

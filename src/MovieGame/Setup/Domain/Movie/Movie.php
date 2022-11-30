@@ -33,7 +33,7 @@ class Movie
     /** Movie popularity */
     private float $popularity;
 
-    /** @var People[] Actors who perform in it */
+    /** @var Actor[] Actors who perform in it */
     private array $actors;
 
     public function getExternalId(): int
@@ -56,16 +56,16 @@ class Movie
         return $this->popularity;
     }
 
-    /** @return People[] */
+    /** @return Actor[] */
     public function getActors(): array
     {
         return $this->actors;
     }
 
-    public function hasActor(People $people): bool
+    public function hasActor(Actor $thatActor): bool
     {
         foreach ($this->actors as $actor) {
-            if ($actor->isSameAs($people)) {
+            if ($actor->isSameAs($thatActor)) {
                 return true;
             }
         }
@@ -101,7 +101,7 @@ class Movie
         return $this;
     }
 
-    /** @param People[] $actors */
+    /** @param Actor[] $actors */
     public function setActors(array $actors): self
     {
         // Filter only valid actors

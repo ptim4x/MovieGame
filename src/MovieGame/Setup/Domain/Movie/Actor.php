@@ -11,25 +11,25 @@ declare(strict_types=1);
 namespace App\MovieGame\Setup\Domain\Movie;
 
 /**
- * People class as DTO/ValueObject.
+ * Actor class as DTO/ValueObject.
  *
  * To deserialize Api response
  * Make some compare
  */
-class People
+class Actor
 {
     public const ACTOR_POPULARITY_MIN = 5;
 
-    /** People id (API side) */
+    /** Actor id (API side) */
     private int $external_id;
 
-    /** People name */
+    /** Actor name */
     private string $name;
 
-    /** People picture path */
+    /** Actor picture path */
     private ?string $picture;
 
-    /** People popularity */
+    /** Actor popularity */
     private float $popularity;
 
     public function getExternalId(): int
@@ -80,9 +80,9 @@ class People
         return $this;
     }
 
-    public function isSameAs(self $people): bool
+    public function isSameAs(self $actor): bool
     {
-        return $this->external_id === $people->external_id;
+        return $this->external_id === $actor->external_id;
     }
 
     /**

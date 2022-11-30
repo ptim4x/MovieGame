@@ -20,22 +20,22 @@ class MovieApiService
     /** Api Movie page counter */
     private RandomUnique $moviePage;
 
-    /** Api People page counter */
-    private RandomUnique $peoplePage;
+    /** Api Actor page counter */
+    private RandomUnique $actorPage;
 
     /** Paginated Api Movie data set */
     private ApiResult $movieSet;
 
-    /** Paginated Api People data set */
-    private ApiResult $peopleSet;
+    /** Paginated Api Actor data set */
+    private ApiResult $actorSet;
 
     public function __construct(private MovieApiInterface $movieApi)
     {
         $this->moviePage = new RandomUnique(min: 1, max: 500);
-        $this->peoplePage = new RandomUnique(min: 1, max: 100);
+        $this->actorPage = new RandomUnique(min: 1, max: 100);
 
         $this->movieSet = new ApiResult();
-        $this->peopleSet = new ApiResult();
+        $this->actorSet = new ApiResult();
     }
 
     /**
@@ -80,18 +80,18 @@ class MovieApiService
     }
 
     /**
-     * Many api call for People until result reach $setSize.
+     * Many api call for Actor until result reach $setSize.
      *
-     * @return People[]
+     * @return Actor[]
      */
-    public function getPeopleSet(int $setSize): array
+    public function getActorSet(int $setSize): array
     {
         do {
-            $page = $this->peoplePage->next();
-            $people = $this->movieApi->getPopularPeople($page);
-            $this->peopleSet->addResult($people);
-        } while ($this->peopleSet->getResultCount() < $setSize);
+            $page = $this->actorPage->next();
+            $actor = $this->movieApi->getPopularActor($page);
+            $this->actorSet->addResult($actor);
+        } while ($this->actorSet->getResultCount() < $setSize);
 
-        return $this->peopleSet->getResultLimited($setSize);
+        return $this->actorSet->getResultLimited($setSize);
     }
 }

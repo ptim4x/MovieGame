@@ -24,17 +24,17 @@ interface MovieApiInterface
     public function getPopularMovies(int $page): array;
 
     /**
-     * Make Api call for popular people.
+     * Make Api call for popular actor.
      *
-     * @return People[]
+     * @return Actor[]
      */
-    public function getPopularPeople(int $page): array;
+    public function getPopularActor(int $page): array;
 
     /**
-     * Make Api call for popular people
+     * Make Api call for popular actor
      * who perform in the movie with $movieId as Api movie id.
      *
-     * @return People[]
+     * @return Actor[]
      */
     public function getMovieActors(int $movieId): array;
 }

@@ -33,8 +33,8 @@ class NewGameSetHandler
 
         $movies = $this->movieApiService->getMovieSet($questionSetSize);
 
-        $people = $this->movieApiService->getPeopleSet($questionSetSize);
+        $actors = $this->movieApiService->getActorSet($questionSetSize);
 
-        $this->questionService->createGameSet($movies, $people, $questionSetSize);
+        $this->questionService->createGameSet($movies, $actors, $questionSetSize);
     }
 }

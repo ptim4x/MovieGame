@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace App\MovieGame\Setup\Domain\Question;
 
+use App\MovieGame\Setup\Domain\Movie\Actor;
 use App\MovieGame\Setup\Domain\Movie\Movie;
-use App\MovieGame\Setup\Domain\Movie\People;
 use App\MovieGame\Setup\Domain\Shared\Random;
 use App\MovieGame\Setup\Domain\Shared\RandomUnique;
 
@@ -38,7 +38,7 @@ class QuestionCreator
     public function __construct(
         /** @var Movie[] List of movie with actors */
         private array $movieSet,
-        /** @var People[] List of actor */
+        /** @var Actor[] List of actor */
         private array $actorSet,
         // private ManagerRegistry $doctrine
     ) {
@@ -100,7 +100,7 @@ class QuestionCreator
     /**
      * Choose an actor seen in this movie.
      */
-    private function chooseActorIn(Movie $movie): ?People
+    private function chooseActorIn(Movie $movie): ?Actor
     {
         $actors = $movie->getActors();
 
@@ -118,7 +118,7 @@ class QuestionCreator
     /**
      * Choose an actor not seen in this movie.
      */
-    private function chooseActorNotIn(Movie $movie): People
+    private function chooseActorNotIn(Movie $movie): Actor
     {
         do {
             // Tw ways to choose actor not performing in this movie
@@ -127,7 +127,7 @@ class QuestionCreator
                 $otherMovie = $this->getRandomOtherMovie();
                 $actor = $this->chooseActorIn($otherMovie);
             } else {
-                // Search actor in standalone people list
+                // Search actor in standalone actor list
                 $actor = $this->actorSet[$this->randomActorKey->next()];
             }
         } while ($movie->hasActor($actor));

@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace App\MovieGame\Setup\Domain\Question;
 
+use App\MovieGame\Setup\Domain\Movie\Actor;
 use App\MovieGame\Setup\Domain\Movie\Movie;
-use App\MovieGame\Setup\Domain\Movie\People;
 
 /**
  * Question class as DTO/ValueObject.
@@ -23,7 +23,7 @@ class Question
     private string $hash;
 
     private function __construct(
-        private People $actor,
+        private Actor $actor,
         private Movie $movie,
         private bool $answer,
     ) {
@@ -31,14 +31,14 @@ class Question
     }
 
     public static function create(
-        People $actor,
+        Actor $actor,
         Movie $movie,
         bool $answer,
     ): self {
         return new self($actor, $movie, $answer);
     }
 
-    public function getActor(): People
+    public function getActor(): Actor
     {
         return $this->actor;
     }

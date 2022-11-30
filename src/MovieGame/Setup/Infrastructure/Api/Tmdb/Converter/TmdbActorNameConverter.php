@@ -12,7 +12,7 @@ namespace App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter;
 
 use Symfony\Component\Serializer\NameConverter\NameConverterInterface;
 
-class TmdbPeopleNameConverter implements NameConverterInterface
+class TmdbActorNameConverter implements NameConverterInterface
 {
     /** N/A : Normailizer never used */
     public function normalize(string $propertyName): string
@@ -21,7 +21,7 @@ class TmdbPeopleNameConverter implements NameConverterInterface
     }
 
     /**
-     * Modify People parameter name when denormalize (array=>object).
+     * Modify Actor parameter name when denormalize (array=>object).
      */
     public function denormalize(string $propertyName): string
     {
