@@ -23,6 +23,7 @@ framework:
                 base_uri: '%tmdb.api.url%'
                 query:
                     api_key: '%tmdb.api.key%'
+                    language: fr-FR
 
 when@test:
     framework:
