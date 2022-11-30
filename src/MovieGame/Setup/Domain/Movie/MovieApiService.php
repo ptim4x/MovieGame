@@ -56,7 +56,7 @@ class MovieApiService
             $movie->setActors($actors);
 
             // Add only valid movies
-            if($movie->isValid()) {
+            if ($movie->isValid()) {
                 $validMovies[] = $movie;
             }
         }
@@ -74,8 +74,7 @@ class MovieApiService
         do {
             $movies = $this->getMovies();
             $this->movieSet->addResult($movies);
-        } 
-        while ($this->movieSet->getResultCount() < $setSize);
+        } while ($this->movieSet->getResultCount() < $setSize);
 
         return $this->movieSet->getResultLimited($setSize);
     }
@@ -91,8 +90,7 @@ class MovieApiService
             $page = $this->peoplePage->next();
             $people = $this->movieApi->getPopularPeople($page);
             $this->peopleSet->addResult($people);
-        } 
-        while ($this->peopleSet->getResultCount() < $setSize);
+        } while ($this->peopleSet->getResultCount() < $setSize);
 
         return $this->peopleSet->getResultLimited($setSize);
     }

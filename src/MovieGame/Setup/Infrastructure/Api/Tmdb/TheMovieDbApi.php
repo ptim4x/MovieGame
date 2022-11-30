@@ -10,8 +10,8 @@ declare(strict_types=1);
 
 namespace App\MovieGame\Setup\Infrastructure\Api\Tmdb;
 
-use App\MovieGame\Setup\Domain\Movie\MovieApiInterface;
 use App\MovieGame\Setup\Domain\Movie\Movie;
+use App\MovieGame\Setup\Domain\Movie\MovieApiInterface;
 use App\MovieGame\Setup\Domain\Movie\People;
 use App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter\TmdbMovieNameConverter;
 use App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter\TmdbPeopleNameConverter;
@@ -118,7 +118,7 @@ class TheMovieDbApi implements MovieApiInterface
     private function filterActor(array $people): array
     {
         $filterFn = fn ($person) => self::ACTOR_DEPARTEMENT === $person['known_for_department'];
-        
+
         return array_filter($people, $filterFn);
     }
 }

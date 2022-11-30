@@ -87,13 +87,11 @@ class People
 
     /**
      * Is the actor valid to be used for game ?
-     *
-     * @return boolean
      */
     public function isValid(): bool
     {
         // A minimum of popularity is required for an actor
-        if($this->getPopularity() < self::ACTOR_POPULARITY_MIN) {
+        if ($this->getPopularity() < self::ACTOR_POPULARITY_MIN) {
             return false;
         }
 
