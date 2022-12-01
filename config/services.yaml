@@ -6,9 +6,9 @@
 parameters:
     tmdb.api.key: '%env(TMDB_API_KEY)%'
     tmdb.api.url: https://api.themoviedb.org
-    tmdb.images.url: https://image.tmdb.org/t/p/
-    # tmdb.actor.popularity.min: 5
-    # tmdb.actor.job.title: 'Acting'
+    # image width can be change in this url : w400 means width 400 px
+    tmdb.images.url: https://image.tmdb.org/t/p/w400
+
 
 services:
     # default configuration for services in *this* file
@@ -36,6 +36,6 @@ services:
             - '%kernel.environment%'
             - '@app.doctrine.question.repository'
 
-    # the ``App\Util\Rot13Transformer`` service will be injected when
-    # an ``App\Util\TransformerInterface`` type-hint is detected
-    # App\MovieGame\Setup\Domain\Question\QuestionRepositoryInterface: '@app.doctrine.question.repository'
+    App\MovieGame\Setup\Infrastructure\Api\Tmdb\TheMovieDbApi:
+        arguments: 
+            $apiPhotoBaseUri: '%tmdb.images.url%'

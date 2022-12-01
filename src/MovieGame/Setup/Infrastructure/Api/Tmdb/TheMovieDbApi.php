@@ -36,6 +36,7 @@ class TheMovieDbApi implements MovieApiInterface
 
     public function __construct(
         private HttpClientInterface $tmdbClient,
+        private string $apiPhotoBaseUri,
     ) {
         // Movie Denormalize (array=>object) with parameter name modifying
         $tmdbMovieNormalizer = new ObjectNormalizer(null, new TmdbMovieNameConverter());
@@ -59,6 +60,8 @@ class TheMovieDbApi implements MovieApiInterface
     {
         $results = $this->call('movie/popular', ['page' => $page])['results'];
 
+        $results = $this->updatePictureWithImageBasedUri($results);
+
         return $this->movieSerializer->deserialize(json_encode($results), Movie::class.'[]', 'json');
     }
 
@@ -70,6 +73,8 @@ class TheMovieDbApi implements MovieApiInterface
         $person = $this->call('person/popular', ['page' => $page])['results'];
 
         $actors = $this->filterActor($person);
+
+        $actors = $this->updatePictureWithImageBasedUri($actors);
 
         return $this->actorSerializer->deserialize(json_encode($actors), Actor::class.'[]', 'json');
     }
@@ -83,6 +88,8 @@ class TheMovieDbApi implements MovieApiInterface
         $casting = $this->call("/movie/{$movieId}/credits")['cast'];
 
         $actors = $this->filterActor($casting);
+
+        $actors = $this->updatePictureWithImageBasedUri($actors);
 
         return $this->actorSerializer->deserialize(json_encode($actors), Actor::class.'[]', 'json');
     }
@@ -120,5 +127,29 @@ class TheMovieDbApi implements MovieApiInterface
         $filterFn = fn ($person) => self::ACTOR_DEPARTEMENT === $person['known_for_department'];
 
         return array_filter($people, $filterFn);
+    }
+
+    /**
+     * Update all pictures filemane with the api photo base uri
+     * => Done here to be store !
+     * thus, we can unplug this api and plug another one without full uri picture issue.
+     *
+     * @param array<int, array<string, mixed>> $mixedEntities
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function updatePictureWithImageBasedUri(array $mixedEntities): array
+    {
+        $apiPhotoBaseUri = $this->apiPhotoBaseUri;
+
+        return array_map(function ($mixed) use ($apiPhotoBaseUri) {
+            foreach ($mixed as $field => $value) {
+                if (\in_array($field, ['profile_path', 'poster_path'], true)) {
+                    $mixed[$field] = $apiPhotoBaseUri.$value;
+                }
+            }
+
+            return $mixed;
+        }, $mixedEntities);
     }
 }
