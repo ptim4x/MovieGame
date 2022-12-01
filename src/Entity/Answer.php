@@ -34,7 +34,7 @@ class Answer
     private ?bool $value = null;
 
     #[ORM\Column(nullable: true)]
-    private ?\DateTimeImmutable $AnsweredAt = null;
+    private ?\DateTimeImmutable $answeredAt = null;
 
     public function getId(): ?int
     {
@@ -79,12 +79,12 @@ class Answer
 
     public function getAnsweredAt(): ?\DateTimeImmutable
     {
-        return $this->AnsweredAt;
+        return $this->answeredAt;
     }
 
-    public function setAnsweredAt(?\DateTimeImmutable $AnsweredAt): self
+    public function setAnsweredAt(?\DateTimeImmutable $answeredAt): self
     {
-        $this->AnsweredAt = $AnsweredAt;
+        $this->answeredAt = $answeredAt;
 
         return $this;
     }
