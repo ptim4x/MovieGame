@@ -3,6 +3,6 @@ parameters:
 	paths:
 		- src
 #		- tests
-#	ignoreErrors:
-#		- '#Access to private property#'
+	ignoreErrors:
+		- '#Property App\\MovieGame\\Play\\Domain\\Game\\Exception\\[a-zA-Z0-9\\_]+::\$message has no type specified#'
 	checkGenericClassInNonGenericObjectType: false
