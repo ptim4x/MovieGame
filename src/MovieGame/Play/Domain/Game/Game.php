@@ -16,12 +16,21 @@ namespace App\MovieGame\Play\Domain\Game;
 class Game
 {
     public function __construct(
+        private int $questionId,
         private string $actorName,
         private string $actorPicture,
         private string $movieTitle,
         private string $moviePicture,
         private string $hash,
     ) {
+    }
+
+    /**
+     * Get the value of questionId.
+     */
+    public function getQuestionId(): int
+    {
+        return $this->questionId;
     }
 
     /**

@@ -33,6 +33,9 @@ class Question
     #[ORM\JoinColumn(nullable: false)]
     private ?Answer $answer = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $askedAt = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -70,6 +73,18 @@ class Question
     public function setAnswer(Answer $answer): self
     {
         $this->answer = $answer;
+
+        return $this;
+    }
+
+    public function getAskedAt(): ?\DateTimeImmutable
+    {
+        return $this->askedAt;
+    }
+
+    public function setAskedAt(?\DateTimeImmutable $askedAt): self
+    {
+        $this->askedAt = $askedAt;
 
         return $this;
     }

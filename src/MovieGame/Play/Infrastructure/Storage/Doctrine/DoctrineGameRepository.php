@@ -31,10 +31,11 @@ class DoctrineGameRepository implements GameRepositoryInterface
      */
     public function findNextGameQuestion(): ?Game
     {
-        return $this->em->createQueryBuilder()
+        $question = $this->em->createQueryBuilder()
             // Question DB data forwarded into Game DTO, with help of NEW Doctrine operator
             ->select(sprintf(
                 'NEW %s(
+                    question.id,
                     actor.name,
                     actor.picture,
                     movie.title,
@@ -47,11 +48,15 @@ class DoctrineGameRepository implements GameRepositoryInterface
             ->innerJoin('question.actor', 'actor')
             ->innerJoin('question.movie', 'movie')
             ->innerJoin('question.answer', 'answer')
-            ->andWhere('answer.answeredAt is NULL')
+            ->andWhere('question.askedAt is NULL')
             ->setMaxResults(1)
             ->getQuery()
             ->getOneOrNullResult()
         ;
+
+        $this->setGameQuestionAsked($question->getQuestionId());
+
+        return $question;
     }
 
     /**
@@ -94,5 +99,18 @@ class DoctrineGameRepository implements GameRepositoryInterface
         }
 
         return $answer;
+    }
+
+    /**
+     * Set question asked.
+     */
+    private function setGameQuestionAsked(int $id): void
+    {
+        $question = $this->em->getRepository(Question::class)->find($id);
+
+        // Store date time of question asking
+        $question->setAskedAt(new \DateTimeImmutable());
+        $this->em->persist($question);
+        $this->em->flush();
     }
 }
