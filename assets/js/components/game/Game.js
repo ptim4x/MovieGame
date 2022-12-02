@@ -1,10 +1,9 @@
-import React, { useState, useEffect, useContext } from "react";
+import React from "react";
 import Picture from "./Picture";
 import ButtonsReply from "./ButtonsReply";
-import apiGame from "../../services/ApiGame";
-import { GameContext } from "../App";
+import useQuestionApi from "../../hooks/useQuestionApi";
 import Timer from "./Timer";
-import { useQuery } from "react-query";
+import Credit from "./Credit";
 
 /**
  * Started game component with nested components :
@@ -13,39 +12,33 @@ import { useQuery } from "react-query";
  *  - Timer countdown
  */
 const Game = () => {
-  const { data: question, refetch: refetchQuestion } = useQuery(
-    "game-question",
-    apiGame.getNewQuestion
-  );
-
-  const game_context = useContext(GameContext);
+  const [question, refetchQuestion, replyQuestion] = useQuestionApi();
 
   const handleReply = (reply, hash) => {
-    // Request response
-    if (apiGame.isRightAnswer(reply, hash)) {
-      game_context.win();
-    } else {
-      game_context.loose();
+    if (!hash) {
+      return;
     }
+
+    // Reply to the question
+    replyQuestion(reply, hash);
 
     // Request new question
     refetchQuestion();
   };
 
-  return (
+  return null === question ? (
+    <Credit />
+  ) : (
     <>
       <h2>
         L'acteur/actrice ci-dessous a t-il/elle joué dans le film suivant ?
       </h2>
       <section className="d-flex justify-content-evenly align-items-center mt-4">
-        <Picture data={question ? question.actor : null} />
+        <Picture data={question?.actor} />
         <Timer />
-        <Picture data={question ? question.movie : null} />
+        <Picture data={question?.movie} />
       </section>
-      <ButtonsReply
-        reply={handleReply}
-        hash={question ? question.hash : null}
-      />
+      <ButtonsReply reply={handleReply} hash={question?.hash} />
     </>
   );
 };

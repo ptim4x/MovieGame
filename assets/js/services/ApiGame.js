@@ -2,7 +2,7 @@ import axios from "axios";
 import config from "../config.json";
 
 axios.create({
-  baseURL: config.API_BACK.BASE_URL,
+  baseURL: config.GAME_API.BASE_URL,
   headers: {
     "Content-type": "application/json",
   },
@@ -18,6 +18,7 @@ export default class ApiGame {
   static getNewQuestion = async () =>
     await axios
       .get("/game/play")
+      .then((response) => ApiGame.convertQuestionData(response.data))
       .catch(function (error) {
         if (error.response) {
           // Request made and server responded
@@ -31,8 +32,7 @@ export default class ApiGame {
           // Something happened in setting up the request that triggered an Error
           console.log("Error", error.message);
         }
-      })
-      .then((response) => ApiGame.convertData(response.data));
+      });
 
   /**
    * Post the answer to the question
@@ -48,6 +48,7 @@ export default class ApiGame {
 
     return await axios
       .post(`/game/play/${hash}`, formDataAnswer, config)
+      .then((response) => response.data)
       .catch(function (error) {
         if (error.response) {
           // Request made and server responded
@@ -59,19 +60,31 @@ export default class ApiGame {
           // Something happened in setting up the request that triggered an Error
           console.log("Error", error.message);
         }
-      })
-      .then((response) => {
-        return response.data;
       });
   };
 
   /**
    * Get a new question from back-end
    */
-  static isRightAnswer = (reply, hash) => {
-    ApiGame.postAnswer(reply, hash);
+  static isRightAnswer = async (reply, hash) => {
+    const gameResult = await ApiGame.postAnswer(reply, hash).then((result) => {
+      return ApiGame.convertReplyData(result);
+    });
 
-    return true;
+    return gameResult;
+  };
+
+  /**
+   * Convert Reply data from back-end to front-end format
+   * @param {*} dataBack data back format
+   * @returns it was a good answer ? boolean
+   */
+  static convertReplyData = (dataBack) => {
+    if (!dataBack.result) {
+      return null;
+    }
+
+    return dataBack.result == "win";
   };
 
   /**
@@ -79,7 +92,11 @@ export default class ApiGame {
    * @param {*} dataBack data back format
    * @returns data front format
    */
-  static convertData = (dataBack) => {
+  static convertQuestionData = (dataBack) => {
+    if (!dataBack.result) {
+      return null;
+    }
+
     const data = { ...dataBack.result };
     const dataFront = {
       hash: data.hash,
@@ -95,31 +112,4 @@ export default class ApiGame {
 
     return dataFront;
   };
-
-  // /**
-  //  * Response list data test
-  //  */
-  // static responseList =
-  //   // test data
-  //   {
-  //     "hash#1": false,
-  //     "hash#2": true,
-  //     "hash#3": false,
-  //     // ...
-  //   };
-
-  // static shuffleArray = (array) =>
-  //   array
-  //     .map((a) => ({ sort: Math.random(), value: a }))
-  //     .sort((a, b) => a.sort - b.sort)
-  //     .map((a) => a.value);
-
-  // // static getNewQuestion = () => {
-  // //   ApiGame.questionList = ApiGame.shuffleArray(ApiGame.questionList);
-  // //   return ApiGame.questionList[0];
-  // // }
-
-  // static isRightAnswer = (reply, hash) => {
-  //   return ApiGame.responseList[hash] == reply;
-  // }
 }
