@@ -1,7 +1,8 @@
 import axios from "axios";
+import config from "../config.json";
 
 axios.create({
-  baseURL: "https://localhost",
+  baseURL: config.API_BACK.BASE_URL,
   headers: {
     "Content-type": "application/json",
   },

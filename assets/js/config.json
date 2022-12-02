@@ -1,4 +1,7 @@
 {
+  "GAME_API": {
+    "BASE_URL": "https://localhost"
+  },
   "GAME_TIMEOUT": "60",
   "GAME_SHORTCUT": {
     "PLAY": [" ", "Enter"],
