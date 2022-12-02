@@ -1,9 +1,10 @@
 import React, { useState, useEffect, useContext } from "react";
 import Picture from "./Picture";
 import ButtonsReply from "./ButtonsReply";
-import GameData from "../../services/GameData";
+import apiGame from "../../services/ApiGame";
 import { GameContext } from "../App";
 import Timer from "./Timer";
+import { useQuery } from "react-query";
 
 /**
  * Started game component with nested components :
@@ -12,27 +13,23 @@ import Timer from "./Timer";
  *  - Timer countdown
  */
 const Game = () => {
-  const [question, setQuestion] = useState(null);
+  const { data: question, refetch: refetchQuestion } = useQuery(
+    "game-question",
+    apiGame.getNewQuestion
+  );
 
   const game_context = useContext(GameContext);
 
-  // componentDidMount like
-  useEffect(() => {
-    // Set the first question
-    setQuestion(GameData.getNewQuestion());
-  }, []);
-
   const handleReply = (reply, hash) => {
     // Request response
-    if (GameData.isRightAnswer(reply, hash)) {
+    if (apiGame.isRightAnswer(reply, hash)) {
       game_context.win();
     } else {
       game_context.loose();
     }
 
     // Request new question
-    const question = GameData.getNewQuestion();
-    setQuestion(question);
+    refetchQuestion();
   };
 
   return (

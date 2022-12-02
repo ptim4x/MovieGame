@@ -2,10 +2,13 @@ import React, { useState, useEffect, createContext } from "react";
 import Game from "./game/Game";
 import Start from "./game/Start";
 import Scores from "./game/Scores";
-import GameData from "../services/GameData";
+import { QueryClient, QueryClientProvider } from "react-query";
 import useLocalStorage from "../hooks/useLocalStorage";
 
-/** Create useful game context */
+/** Create Query client */
+const queryClient = new QueryClient();
+
+/** Create game context */
 export const GameContext = createContext();
 
 /**
@@ -53,7 +56,9 @@ const App = () => {
           }}
         >
           {isStarted ? (
-            <Game />
+            <QueryClientProvider client={queryClient}>
+              <Game />
+            </QueryClientProvider>
           ) : (
             <Start title={score + looseScore > 0 ? "Rejouer" : "Jouer"} />
           )}
