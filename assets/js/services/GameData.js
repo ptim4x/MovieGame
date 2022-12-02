@@ -1,6 +1,6 @@
 /**
  * Service class to manage data with API requests
- * 
+ *
  * For the moment, there's no api call but only fake data set
  */
 export default class GameData {
@@ -65,9 +65,9 @@ export default class GameData {
   static getNewQuestion = () => {
     GameData.questionList = GameData.shuffleArray(GameData.questionList);
     return GameData.questionList[0];
-  }
+  };
 
   static isRightAnswer = (reply, hash) => {
     return GameData.responseList[hash] == reply;
-  }
+  };
 }

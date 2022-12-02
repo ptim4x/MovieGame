@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 
 /**
- * Hook that handle key press and release as shortcut to run 
+ * Hook that handle key press and release as shortcut to run
  * method (default: click) on ref related element
  *
  * @param {string|Array} keyboardShortcut
@@ -14,7 +14,8 @@ const useKeyboardShortcutRef = (keyboardShortcut, method = "click") => {
   useEffect(() => {
     const keyboardShortcutHandler = (event) => {
       if (
-        (Array.isArray(keyboardShortcut) && keyboardShortcut.includes(event.key)) ||
+        (Array.isArray(keyboardShortcut) &&
+          keyboardShortcut.includes(event.key)) ||
         event.key === keyboardShortcut
       ) {
         targetRef.current[method]();

@@ -6,11 +6,11 @@ const getLocalStorageOrDefault = (key, defaultValue) => {
     return defaultValue;
   }
   return JSON.parse(stored);
-}
+};
 
 /**
  * Hook for local storage value
- * 
+ *
  * @param {string} key the local storage string key
  * @param {string} defaultValue default value if key not exists into local storage
  * @returns array with value and setter
@@ -25,6 +25,6 @@ const useLocalStorage = (key, defaultValue) => {
   }, [key, value]);
 
   return [value, setValue];
-}
+};
 
 export default useLocalStorage;
