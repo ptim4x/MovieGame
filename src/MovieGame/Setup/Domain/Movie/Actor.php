@@ -95,6 +95,11 @@ class Actor
             return false;
         }
 
+        // A picture is required for an actor
+        if (!$this->getPicture()) {
+            return false;
+        }
+
         return true;
     }
 }

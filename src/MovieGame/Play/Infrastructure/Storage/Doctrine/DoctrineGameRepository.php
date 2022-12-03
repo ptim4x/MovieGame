@@ -54,6 +54,10 @@ class DoctrineGameRepository implements GameRepositoryInterface
             ->getOneOrNullResult()
         ;
 
+        if (null === $question) {
+            return null;
+        }
+
         $this->setGameQuestionAsked($question->getQuestionId());
 
         return $question;

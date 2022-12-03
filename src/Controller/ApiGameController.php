@@ -30,11 +30,12 @@ class ApiGameController extends AbstractController
     {
         $question = $this->game->getNewQuestion();
 
+        $payload = ['result' => $question];
         if (null === $question) {
-            return $this->json(['error' => 'No more question found'], 404);
+            $payload['info'] = 'No more question';
         }
 
-        return $this->json(['result' => $question], 200);
+        return $this->json($payload, 200);
     }
 
     #[Route('/game/play/{hash}', name: 'app_api_answer', methods: ['POST'])]
