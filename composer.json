@@ -27,6 +27,7 @@
         "symfony/runtime": "5.4.*",
         "symfony/serializer": "5.4.*",
         "symfony/twig-bundle": "5.4.*",
+        "symfony/webpack-encore-bundle": "^1.16",
         "symfony/yaml": "5.4.*",
         "twig/extra-bundle": "^2.12|^3.0",
         "twig/twig": "^2.12|^3.0"
@@ -85,7 +86,6 @@
         "phpstan/extension-installer": "^1.2",
         "phpstan/phpstan": "^1.9",
         "phpstan/phpstan-symfony": "^1.2",
-        "symfony/maker-bundle": "^1.48",
-        "symfony/webpack-encore-bundle": "^1.16"
+        "symfony/maker-bundle": "^1.48"
     }
 }
