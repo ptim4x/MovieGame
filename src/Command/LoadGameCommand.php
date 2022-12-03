@@ -13,6 +13,7 @@ namespace App\Command;
 use App\MovieGame\Setup\Application\Command\NewGameSetCommand;
 use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -42,14 +43,17 @@ class LoadGameCommand extends Command
         $this
             // the command help shown when running the command with the "--help" option
             ->setHelp('This command allows you to load game data from api call')
-            ->addOption('moviedb', mode: InputOption::VALUE_NONE)
+            ->addArgument('setSize', InputArgument::REQUIRED, 'Question set size')
+            ->addOption('themoviedb', mode: InputOption::VALUE_NONE)
         ;
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        if ($input->getOption('moviedb')) {
-            $command = new NewGameSetCommand(setSize: 100);
+        $setSize = $input->getArgument('setSize') + 0;
+
+        if ($input->getOption('themoviedb')) {
+            $command = new NewGameSetCommand(setSize: $setSize);
 
             $this->messageBus->dispatch($command);
 
