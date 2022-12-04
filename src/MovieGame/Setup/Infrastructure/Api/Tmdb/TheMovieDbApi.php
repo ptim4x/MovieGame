@@ -15,6 +15,7 @@ use App\MovieGame\Setup\Domain\Movie\Movie;
 use App\MovieGame\Setup\Domain\Movie\MovieApiInterface;
 use App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter\TmdbActorNameConverter;
 use App\MovieGame\Setup\Infrastructure\Api\Tmdb\Converter\TmdbMovieNameConverter;
+use LanguageDetector\LanguageDetector;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ArrayDenormalizer;
 use Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer;
@@ -31,9 +32,13 @@ class TheMovieDbApi implements MovieApiInterface
     public const PATH = '/3';
     public const ACTOR_DEPARTEMENT = 'Acting';
     public const MOVIE_ANIMATION_GENRE_ID = 16;
+    // LanguageDetector lib not very relevant for european languages (mostly because a title has few words)
+    // THus, a lot of languages are allowed
+    public const MOVIE_LANGUAGE_ALLOWED = ['fr', 'en', 'it', 'es', 'de', 'tl', 'pt', 'id', 'so', 'hr', 'sw', 'nl', 'da', 'af', 'lt', 'fi', 'i-klingon', 'sq', 'no'];
 
     private SerializerInterface $movieSerializer;
     private SerializerInterface $actorSerializer;
+    private LanguageDetector $languageDetector;
 
     public function __construct(
         private HttpClientInterface $tmdbClient,
@@ -52,6 +57,8 @@ class TheMovieDbApi implements MovieApiInterface
             [$tmdbActorNormalizer, new GetSetMethodNormalizer(), new ArrayDenormalizer()],
             [new JsonEncoder()]
         );
+
+        $this->languageDetector = new LanguageDetector();
     }
 
     /**
@@ -141,7 +148,18 @@ class TheMovieDbApi implements MovieApiInterface
      */
     private function filterMovies(array $movies): array
     {
-        $filterFn = fn ($movie) => !\in_array(self::MOVIE_ANIMATION_GENRE_ID, $movie['genre_ids'], true);
+        // Animation movie filter function
+        $animationfilterFn = fn ($movie) => !\in_array(self::MOVIE_ANIMATION_GENRE_ID, $movie['genre_ids'], true);
+
+        // Languages movie filter function
+        $languagesfilterFn = function ($movie) {
+            // Exclude eastern movies whose title is not translated
+            $countryCode = $this->languageDetector->evaluate($movie['title'])->getLanguage();
+
+            return \in_array($countryCode->getCode(), self::MOVIE_LANGUAGE_ALLOWED, true);
+        };
+
+        $filterFn = fn ($movie) => $animationfilterFn($movie) && $languagesfilterFn($movie);
 
         return array_filter($movies, $filterFn);
     }
