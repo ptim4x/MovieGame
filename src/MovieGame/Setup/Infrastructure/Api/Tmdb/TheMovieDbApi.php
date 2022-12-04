@@ -30,6 +30,7 @@ class TheMovieDbApi implements MovieApiInterface
 {
     public const PATH = '/3';
     public const ACTOR_DEPARTEMENT = 'Acting';
+    public const MOVIE_ANIMATION_GENRE_ID = 16;
 
     private SerializerInterface $movieSerializer;
     private SerializerInterface $actorSerializer;
@@ -59,6 +60,8 @@ class TheMovieDbApi implements MovieApiInterface
     public function getPopularMovies(int $page = 1): array
     {
         $results = $this->call('movie/popular', ['page' => $page])['results'];
+
+        $results = $this->filterMovies($results);
 
         $results = $this->updatePictureWithImageBasedUri($results);
 
@@ -127,6 +130,20 @@ class TheMovieDbApi implements MovieApiInterface
         $filterFn = fn ($person) => self::ACTOR_DEPARTEMENT === $person['known_for_department'];
 
         return array_filter($people, $filterFn);
+    }
+
+    /**
+     * Filter movies genre Animation.
+     *
+     * @param array<int, array<string, mixed>> $movies
+     *
+     * @return array<int, array<string, mixed>>
+     */
+    private function filterMovies(array $movies): array
+    {
+        $filterFn = fn ($movie) => !\in_array(self::MOVIE_ANIMATION_GENRE_ID, $movie['genre_ids'], true);
+
+        return array_filter($movies, $filterFn);
     }
 
     /**
