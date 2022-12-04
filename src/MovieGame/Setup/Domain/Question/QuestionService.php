@@ -38,23 +38,12 @@ class QuestionService
             $question = $questionCreator->create();
             $questions[] = $question;
             $question->getAnswer() ? $answerYes++ : $answerNo++;
-
-            if ('dev' === $this->env) {
-                echo "Question {$i} = ".$question->getActor()->getName().
-                    ' play in '.$question->getMovie()->getTitle().
-                    ' => '.($question->getAnswer() ? 'YES' : 'NO')."\n";
-            }
         }
 
         // Store all Question
         $this->questionRepository->storeMany($questions);
 
         --$i;
-        if ('dev' === $this->env) {
-            echo "END: {$i} questions created ! {$answerYes} YES answers and {$answerNo} NO answers\n";
-        } else {
-            $ratio = round($answerYes / $answerNo, 2);
-            echo "END: {$i} questions created ! answer YES/NO ratio {$ratio} \n";
-        }
+        echo "END: {$i} questions created ! {$answerYes} YES answers and {$answerNo} NO answers\n";
     }
 }
