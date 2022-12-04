@@ -1,0 +1,28 @@
+version: '2'
+
+services:
+  base:
+    image: node:lts
+    volumes:
+      - .:/usr/src/service/
+    working_dir: /usr/src/service/
+
+  install:
+    extends:
+      service: base
+    command: npm i
+
+  build:
+    extends:
+      service: base
+    command: npm run build
+
+  dev:
+    extends:
+      service: base
+    command: npm run dev
+
+  watch:
+    extends:
+      service: base
+    command: npm run watch
