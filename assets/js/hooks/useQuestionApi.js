@@ -8,7 +8,7 @@ import { GameContext } from "../components/App";
  * @returns array with value, fetcher and replyier
  */
 const useQuestionApi = () => {
-  const [question, setQuestion] = useState(null);
+  const [question, setQuestion] = useState({});
 
   const game_context = useContext(GameContext);
 
@@ -23,6 +23,7 @@ const useQuestionApi = () => {
         game_context.win();
       } else {
         game_context.loose();
+        game_context.stop();
       }
     });
   };
@@ -31,6 +32,13 @@ const useQuestionApi = () => {
   useEffect(() => {
     refetchQuestion();
   }, []);
+
+  // Check no more question
+  useEffect(() => {
+    if (null === question) {
+      game_context.end();
+    }
+  }, [question]);
 
   return [question, refetchQuestion, replyQuestion];
 };

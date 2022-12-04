@@ -3,7 +3,6 @@ import Picture from "./Picture";
 import ButtonsReply from "./ButtonsReply";
 import useQuestionApi from "../../hooks/useQuestionApi";
 import Timer from "./Timer";
-import Credit from "./Credit";
 
 /**
  * Started game component with nested components :
@@ -26,19 +25,21 @@ const Game = () => {
     refetchQuestion();
   };
 
-  return null === question ? (
-    <Credit />
-  ) : (
+  if (null === question) {
+    return;
+  }
+
+  return (
     <>
       <h2>
         L'acteur/actrice ci-dessous a t-il/elle joué dans le film suivant ?
       </h2>
       <section className="d-flex justify-content-evenly align-items-center mt-4">
-        <Picture data={question?.actor} />
+        <Picture data={question.actor} />
         <Timer />
-        <Picture data={question?.movie} />
+        <Picture data={question.movie} />
       </section>
-      <ButtonsReply reply={handleReply} hash={question?.hash} />
+      <ButtonsReply reply={handleReply} hash={question.hash} />
     </>
   );
 };

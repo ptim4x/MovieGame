@@ -2,6 +2,7 @@ import React, { useState, useEffect, createContext } from "react";
 import Game from "./game/Game";
 import Start from "./game/Start";
 import Scores from "./game/Scores";
+import Credit from "./game/Credit";
 import useLocalStorage from "../hooks/useLocalStorage";
 
 /** Create game context */
@@ -15,6 +16,7 @@ const App = () => {
   const [score, setScore] = useState(0);
   const [looseScore, setLooseScore] = useState(0);
   const [highScore, setHighScore] = useLocalStorage("moviegame_highscore", 0);
+  const [hasQuestion, setHasQuestion] = useState(true);
 
   useEffect(() => {
     if (isStarted) {
@@ -42,6 +44,7 @@ const App = () => {
           looseScore={looseScore}
           highScore={highScore}
           isStarted={isStarted}
+          hasQuestion={hasQuestion}
         />
         <GameContext.Provider
           value={{
@@ -49,10 +52,15 @@ const App = () => {
             stop: () => setIsStarted(false),
             win: () => setScore((score) => score + 1),
             loose: () => setLooseScore((score) => score + 1),
+            end: () => setHasQuestion(false),
           }}
         >
           {isStarted ? (
-            <Game />
+            hasQuestion ? (
+              <Game />
+            ) : (
+              <Credit />
+            )
           ) : (
             <Start title={score + looseScore > 0 ? "Rejouer" : "Jouer"} />
           )}

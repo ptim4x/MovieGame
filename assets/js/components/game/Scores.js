@@ -1,46 +1,11 @@
-import React, { useState, useEffect } from "react";
-import config from "../../config.json";
+import React from "react";
+import useScore from "../../hooks/useScore";
 
 /**
  * Scores and round informations display component
  */
 const Scores = (props) => {
-  const [info, setInfo] = useState("");
-  const [infoColor, setInfoColor] = useState("info");
-
-  useEffect(() => {
-    setInfoColor("info");
-    if (props.isStarted) {
-      setInfo("Goooooooooooo !");
-    } else if (props.looseScore > 0 || props.score > 0) {
-      setInfo("Aller on se motive pour battre le record");
-    } else {
-      setInfo(
-        `Le jeu dure ${config.GAME_TIMEOUT} secondes, à vos marques, prêt`
-      );
-    }
-  }, [props.isStarted]);
-
-  useEffect(() => {
-    if (props.score > 0) {
-      setInfo("Bravo !");
-      setInfoColor("success");
-    }
-  }, [props.score]);
-
-  useEffect(() => {
-    if (props.looseScore > 0) {
-      setInfo("Et non perdu");
-      setInfoColor("danger");
-    }
-  }, [props.looseScore]);
-
-  useEffect(() => {
-    if (props.score > 0 && props.highScore > 0) {
-      setInfo(`Yeah nouveau record !`);
-      setInfoColor("warning");
-    }
-  }, [props.highScore]);
+  const [info, infoColor] = useScore(props);
 
   return (
     <>
