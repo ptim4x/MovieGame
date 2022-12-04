@@ -14,23 +14,26 @@ with moderns frameworks such as [Symfony 5.4 LTS](https://symfony.com/releases) 
 
 ## Get started
 
-### with make
+1. Run `git clone git@github.com:ptim4x/MovieGame.git` to download this project.
+2. Run `cd MovieGame` to change current directory.
 
-1. Run `make install.prod` to build fresh Docker images and build front prod assets.
-1. Run `make run` to start the Docker containers.
-1. Run `make setsize=100 game.data` to fetch TMDB API and generate 100 game question set.
-5. Open [https://localhost:4443](https://localhost:4443) in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334) and enjoy playing.
-6. Run `make clean` to stop and remove the Docker containers.
+### Next steps with make
 
-### without make
+3. Run `make install.prod` to build fresh Docker images and build front prod assets.
+4. Run `make run` to start the Docker containers.
+5. Run `make game.data setsize=100` to fetch TMDB API and generate 100 game question set.
+6. Open [https://localhost:4443](https://localhost:4443) in your favorite web browser, [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334) and enjoy playing.
+7. Run `make clean` to stop and remove the Docker containers.
 
-1. Run `docker compose build --no-cache` to build fresh images.
-2. Run `HTTP_PORT=8000 HTTPS_PORT=4443 docker compose up -d` to start the Docker containers.
-3. Run `docker compose -f docker-compose.builder.yml run --rm install` to install node packages.
-3. Run `docker compose -f docker-compose.builder.yml run --rm build` to build front assets.
-4. Run `docker compose exec php php bin/console app:data:load 100 --themoviedb` to fetch TMDB API and generate 100 game question set.
-5. Open [https://localhost:4443](https://localhost:4443) in your favorite web browser and [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334) and enjoy playing.
-6. Run `docker compose down --remove-orphans` to stop and remove the Docker containers.
+### Next steps without make
+
+3. Run `docker compose build --no-cache` to build fresh images.
+4. Run `docker compose -f docker-compose.builder.yml run --rm install` to install node packages.
+5. Run `docker compose -f docker-compose.builder.yml run --rm build` to build front assets.
+6. Run `HTTP_PORT=8000 HTTPS_PORT=4443 docker compose up -d` to start the Docker containers.
+7. Run `docker compose exec php php bin/console app:data:load 100 --themoviedb` to fetch TMDB API and generate 100 game question set.
+8. Open [https://localhost:4443](https://localhost:4443) in your favorite web browser, [accept the auto-generated TLS certificate](https://stackoverflow.com/a/15076602/1352334) and enjoy playing.
+9. Run `docker compose down --remove-orphans` to stop and remove the Docker containers.
 
 ## Game play
 
