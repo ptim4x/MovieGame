@@ -10,7 +10,10 @@ with moderns frameworks such as [Symfony 5.4 LTS](https://symfony.com/releases) 
 
 ## Requirement
 
-* [Docker Compose](https://docs.docker.com/compose/install/) (v2.10+)
+* [Docker Compose V2.10+](https://docs.docker.com/compose/compose-v2/)
+
+The `compose` V2 command is a `docker` sub command.  
+You can run Compose V2 by replacing the hyphen (-) with a space, using `docker compose`, instead of `docker-compose`.  
 
 ## Get started
 
