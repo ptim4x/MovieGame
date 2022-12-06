@@ -10,7 +10,7 @@ import useImagesLoading from "./useImagesLoading";
 const useQuestionApi = (winGame, looseGame, stopGame) => {
   const [question, setQuestion] = useState({});
   const [questionLoading, setQuestionLoading] = useState({});
-  const [isLoading, loadedCount, setImagesLoading] = useImagesLoading();
+  const [isLoading, setImagesLoading] = useImagesLoading();
   const [hasQuestion, setHasQuestion] = useState(false);
 
   // Set the new question and preload the next question
@@ -64,14 +64,7 @@ const useQuestionApi = (winGame, looseGame, stopGame) => {
     }
   }, [question]);
 
-  return [
-    question,
-    hasQuestion,
-    isLoading,
-    loadedCount,
-    refetchQuestion,
-    replyQuestion,
-  ];
+  return [question, hasQuestion, isLoading, refetchQuestion, replyQuestion];
 };
 
 export default useQuestionApi;

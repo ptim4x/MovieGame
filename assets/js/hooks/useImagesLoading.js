@@ -6,11 +6,9 @@ import { useState, useEffect } from "react";
 const useImagesLoading = () => {
   const [loadingImages, setImagesLoading] = useState([]);
   const [isLoading, setLoading] = useState(false);
-  const [loadedCount, setLoadedCount] = useState(0);
 
   const cacheImages = async (srcArray) => {
     setLoading(true);
-    setLoadedCount(0);
 
     let imagesCount = srcArray.length;
 
@@ -24,7 +22,6 @@ const useImagesLoading = () => {
 
         // Finish loading one image
         img.onloadend = () => {
-          setLoadedCount((loadedCount) => loadedCount + 1);
           if (--imagesCount === 0) {
             setLoading(false);
           }
@@ -44,7 +41,7 @@ const useImagesLoading = () => {
     }
   }, [loadingImages]);
 
-  return [isLoading, loadedCount, setImagesLoading];
+  return [isLoading, setImagesLoading];
 };
 
 export default useImagesLoading;

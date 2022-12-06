@@ -23,18 +23,11 @@ const useScore = (props) => {
       // Game just end and player has played
       setInfo("Aller on se motive pour battre le record");
     } else {
-      // Initial state game
-      if (props.loadedCount === 0) {
-        setInfo(`Le jeu dure ${config.GAME_TIMEOUT} secondes`);
-      }
-      if (props.loadedCount === 1) {
-        setInfo((info) => info + `, à vos marques`);
-      }
-      if (props.loadedCount === 2) {
-        setInfo((info) => info + `, prêt`);
-      }
+      setInfo(
+        `Le jeu dure ${config.GAME_TIMEOUT} secondes, à vos marques, prêt`
+      );
     }
-  }, [props.isStarted, props.hasQuestion, props.loadedCount]);
+  }, [props.isStarted, props.hasQuestion]);
 
   useEffect(() => {
     if (props.score > 0) {
