@@ -29,12 +29,11 @@ const useQuestionApi = (winGame, looseGame, stopGame) => {
     apiGame.isRightAnswer(reply, hash).then((result) => {
       if (result) {
         winGame();
+        // Set the new question and preload the next question
+        refetchQuestion();
       } else {
         looseGame();
       }
-
-      // Set the new question and preload the next question
-      refetchQuestion();
     });
   };
 
@@ -44,16 +43,26 @@ const useQuestionApi = (winGame, looseGame, stopGame) => {
   }, []);
 
   useEffect(() => {
-    // No more question
+    // No more question to preload
     if (null === questionLoading) {
-      setHasQuestion(false);
-      stopGame();
-    } else if (questionLoading.actor !== undefined) {
+      // The game hasn't start but there isn't any question
+      if (!question?.complete) {
+        setHasQuestion(false);
+      }
+    } else if (questionLoading?.complete) {
       setHasQuestion(true);
       // Preload images
       setImagesLoading([questionLoading.actor.img, questionLoading.movie.img]);
     }
   }, [questionLoading]);
+
+  useEffect(() => {
+    // No more question to ask
+    if (null === question) {
+      setHasQuestion(false);
+      stopGame();
+    }
+  }, [question]);
 
   return [
     question,

@@ -108,6 +108,7 @@ export default class ApiGame {
         title: data.movie.title,
         img: data.movie.picture,
       },
+      complete: true,
     };
 
     return dataFront;

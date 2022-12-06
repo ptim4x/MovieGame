@@ -20,8 +20,8 @@ const Game = (props) => {
     props.refetchQuestion();
   }, []);
 
-  // Question not already loaded
-  if (props.question.actor === undefined) {
+  // Question not complete
+  if (!props.question.complete) {
     return;
   }
 
