@@ -29,11 +29,12 @@ const useQuestionApi = (winGame, looseGame, stopGame) => {
     apiGame.isRightAnswer(reply, hash).then((result) => {
       if (result) {
         winGame();
-        // Set the new question and preload the next question
-        refetchQuestion();
       } else {
         looseGame();
       }
+
+      // Set the new question and preload the next question
+      refetchQuestion();
     });
   };
 

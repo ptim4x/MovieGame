@@ -17,7 +17,11 @@ const Game = (props) => {
 
   // Set the new question and preload the next question
   useEffect(() => {
-    props.refetchQuestion();
+    // First mount Game with only one preloaded question
+    // and without a question to ask, so refetchQuestion
+    if (!props.question?.complete) {
+      props.refetchQuestion();
+    }
   }, []);
 
   // Question not complete
