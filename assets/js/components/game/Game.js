@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Picture from "./Picture";
 import ButtonsReply from "./ButtonsReply";
 import Timer from "./Timer";
@@ -21,7 +21,7 @@ const Game = (props) => {
       </h2>
       <section className="d-flex justify-content-evenly align-items-center mt-4">
         <Picture data={props.question.actor} />
-        <Timer />
+        <Timer stop={props.stop} />
         <Picture data={props.question.movie} />
       </section>
       <ButtonsReply reply={props.replyQuestion} hash={props.question.hash} />

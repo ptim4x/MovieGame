@@ -1,20 +1,17 @@
-import React, { useEffect, useContext } from "react";
+import React, { useEffect } from "react";
 import useCountdown from "../../hooks/useCountdown";
-import { GameContext } from "../App";
 import config from "../../config.json";
 
 /**
  * Countdown timer component
  */
-const Timer = () => {
+const Timer = (props) => {
   const [countdown] = useCountdown(config.GAME_TIMEOUT);
-
-  const game_context = useContext(GameContext);
 
   useEffect(() => {
     // Stop game at finish countdown
     if (countdown == 0) {
-      game_context.stop();
+      props.stop();
     }
   }, [countdown]);
 

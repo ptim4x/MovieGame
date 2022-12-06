@@ -1,13 +1,10 @@
-import React, { useState, useEffect, createContext } from "react";
+import React from "react";
 import Game from "./game/Game";
 import Start from "./game/Start";
 import Scores from "./game/Scores";
 import Credit from "./game/Credit";
 import useQuestionApi from "../hooks/useQuestionApi";
 import useGame from "../hooks/useGame";
-
-/** Create game context */
-export const GameContext = createContext();
 
 /**
  * Main App component
@@ -37,20 +34,16 @@ const App = () => {
           isStarted={isStarted}
           hasQuestion={hasQuestion}
         />
-        <GameContext.Provider
-          value={{
-            start: start,
-            stop: stop,
-          }}
-        >
-          {isStarted ? (
-            <Game question={question} replyQuestion={replyQuestion} />
-          ) : hasQuestion ? (
-            <Start title={score + looseScore > 0 ? "Rejouer" : "Jouer"} />
-          ) : (
-            <Credit />
-          )}
-        </GameContext.Provider>
+        {isStarted ? (
+          <Game question={question} replyQuestion={replyQuestion} stop={stop} />
+        ) : hasQuestion ? (
+          <Start
+            title={score + looseScore > 0 ? "Rejouer" : "Jouer"}
+            start={start}
+          />
+        ) : (
+          <Credit />
+        )}
       </main>
       <footer className=""></footer>
     </div>

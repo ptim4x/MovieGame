@@ -50,7 +50,7 @@ Basically, you can run Compose V2 using `docker compose`, instead of `docker-com
 ### Keyboard shortcut
 
 * Play button : `Space` or `Enter`
-* Answer buttons : `left arrow` = Yes / `right arrow` = No
+* Answer buttons : `Left arrow` = Yes / `Right arrow` = No
 
 ## Utils
 

@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { GameContext } from "../App";
+import React from "react";
 import useKeyboardShortcutRef from "../../hooks/useKeyboardShortcutRef";
 import config from "../../config.json";
 
@@ -7,8 +6,6 @@ import config from "../../config.json";
  * Start/Restart game component
  */
 const Start = (props) => {
-  const game_context = useContext(GameContext);
-
   // keyboard shortcut to launch game (default Space or Enter)
   const playRef = useKeyboardShortcutRef(config.GAME_SHORTCUT.PLAY);
 
@@ -18,7 +15,7 @@ const Start = (props) => {
         ref={playRef}
         type="button"
         className="btn btn-lg btn-secondary col-6 py-5"
-        onClick={game_context.start}
+        onClick={props.start}
       >
         {props.title}
       </button>
