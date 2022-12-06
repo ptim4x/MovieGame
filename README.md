@@ -55,9 +55,12 @@ Basically, you can run Compose V2 using `docker compose`, instead of `docker-com
 ## Utils
 
 * PostgreSql Database : available on port 54321 in dev environement
-
 * Run `docker-compose exec database psql -U meatloaf -d game -c "TRUNCATE TABLE question; TRUNCATE TABLE answer CASCADE; TRUNCATE TABLE answer CASCADE; TRUNCATE TABLE movie CASCADE;"` to truncate all tables.
 
+## ChangeLog
+
+* v0.1 : First working version.
+* v0.2 : Improve react-ivity beetween rounds by preloading images.
 
 ## Credits
 
