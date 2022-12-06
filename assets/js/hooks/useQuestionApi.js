@@ -1,46 +1,55 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import apiGame from "../services/ApiGame";
-import { GameContext } from "../components/App";
 
 /**
  * Hook to manage Question from API
  *
  * @returns array with value, fetcher and replyier
  */
-const useQuestionApi = () => {
+const useQuestionApi = (winGame, looseGame, stopGame) => {
   const [question, setQuestion] = useState({});
+  const [hasQuestion, setHasQuestion] = useState(false);
 
-  const game_context = useContext(GameContext);
-
+  // Fetch a new question
   const refetchQuestion = () => {
     apiGame.getNewQuestion().then((result) => setQuestion(result));
   };
 
+  // Player reply to the question
   const replyQuestion = (reply, hash) => {
+    if (!hash) {
+      return;
+    }
+
+    // Check answer from API
     apiGame.isRightAnswer(reply, hash).then((result) => {
-      // Request response
       if (result) {
-        game_context.win();
+        winGame();
       } else {
-        game_context.loose();
-        game_context.stop();
+        looseGame();
       }
+
+      // Fetch a new question
+      refetchQuestion();
     });
   };
 
-  // componentDidMount like
+  // Initial question fetch at mount
   useEffect(() => {
     refetchQuestion();
   }, []);
 
-  // Check no more question
   useEffect(() => {
+    // No more question
     if (null === question) {
-      game_context.end();
+      setHasQuestion(false);
+      stopGame();
+    } else if (question.actor !== undefined) {
+      setHasQuestion(true);
     }
   }, [question]);
 
-  return [question, refetchQuestion, replyQuestion];
+  return [question, hasQuestion, refetchQuestion, replyQuestion];
 };
 
 export default useQuestionApi;

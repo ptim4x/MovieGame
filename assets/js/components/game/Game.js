@@ -1,7 +1,6 @@
 import React from "react";
 import Picture from "./Picture";
 import ButtonsReply from "./ButtonsReply";
-import useQuestionApi from "../../hooks/useQuestionApi";
 import Timer from "./Timer";
 
 /**
@@ -10,22 +9,8 @@ import Timer from "./Timer";
  *  - ButtonsReply for answering
  *  - Timer countdown
  */
-const Game = () => {
-  const [question, refetchQuestion, replyQuestion] = useQuestionApi();
-
-  const handleReply = (reply, hash) => {
-    if (!hash) {
-      return;
-    }
-
-    // Reply to the question
-    replyQuestion(reply, hash);
-
-    // Request new question
-    refetchQuestion();
-  };
-
-  if (null === question) {
+const Game = (props) => {
+  if (null === props.question) {
     return;
   }
 
@@ -35,11 +20,11 @@ const Game = () => {
         L'acteur/actrice ci-dessous a t-il/elle joué dans le film suivant ?
       </h2>
       <section className="d-flex justify-content-evenly align-items-center mt-4">
-        <Picture data={question.actor} />
+        <Picture data={props.question.actor} />
         <Timer />
-        <Picture data={question.movie} />
+        <Picture data={props.question.movie} />
       </section>
-      <ButtonsReply reply={handleReply} hash={question.hash} />
+      <ButtonsReply reply={props.replyQuestion} hash={props.question.hash} />
     </>
   );
 };

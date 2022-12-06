@@ -3,7 +3,8 @@ import Game from "./game/Game";
 import Start from "./game/Start";
 import Scores from "./game/Scores";
 import Credit from "./game/Credit";
-import useLocalStorage from "../hooks/useLocalStorage";
+import useQuestionApi from "../hooks/useQuestionApi";
+import useGame from "../hooks/useGame";
 
 /** Create game context */
 export const GameContext = createContext();
@@ -12,24 +13,14 @@ export const GameContext = createContext();
  * Main App component
  */
 const App = () => {
-  const [isStarted, setIsStarted] = useState(false);
-  const [score, setScore] = useState(0);
-  const [looseScore, setLooseScore] = useState(0);
-  const [highScore, setHighScore] = useLocalStorage("moviegame_highscore", 0);
-  const [hasQuestion, setHasQuestion] = useState(true);
+  const [isStarted, score, looseScore, highScore, start, stop, win, loose] =
+    useGame();
 
-  useEffect(() => {
-    if (isStarted) {
-      // Init current game score
-      setScore(0);
-      setLooseScore(0);
-    } else {
-      if (score > highScore) {
-        // current game finised and beat high score
-        setHighScore(score);
-      }
-    }
-  }, [isStarted]);
+  const [question, hasQuestion, replyQuestion] = useQuestionApi(
+    win,
+    loose,
+    stop
+  );
 
   return (
     <div className="container align-center">
@@ -48,21 +39,16 @@ const App = () => {
         />
         <GameContext.Provider
           value={{
-            start: () => setIsStarted(true),
-            stop: () => setIsStarted(false),
-            win: () => setScore((score) => score + 1),
-            loose: () => setLooseScore((score) => score + 1),
-            end: () => setHasQuestion(false),
+            start: start,
+            stop: stop,
           }}
         >
           {isStarted ? (
-            hasQuestion ? (
-              <Game />
-            ) : (
-              <Credit />
-            )
-          ) : (
+            <Game question={question} replyQuestion={replyQuestion} />
+          ) : hasQuestion ? (
             <Start title={score + looseScore > 0 ? "Rejouer" : "Jouer"} />
+          ) : (
+            <Credit />
           )}
         </GameContext.Provider>
       </main>

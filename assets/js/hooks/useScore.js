@@ -9,13 +9,12 @@ const useScore = (props) => {
   const [infoColor, setInfoColor] = useState("info");
 
   useEffect(() => {
-    setInfoColor("info");
-    if (props.isStarted) {
-      if (props.hasQuestion) {
-        setInfo("Goooooooooooo !");
-      } else {
-        setInfo(`Plus de question en stock...`);
-      }
+    setInfoColor("info"); // color reboot
+    if (!props.hasQuestion) {
+      setInfo(`Plus de question en stock...`);
+      setInfoColor("warning");
+    } else if (props.isStarted) {
+      setInfo("Goooooooooooo !");
     } else if (props.looseScore > 0 || props.score > 0) {
       setInfo("Aller on se motive pour battre le record");
     } else {
@@ -23,7 +22,7 @@ const useScore = (props) => {
         `Le jeu dure ${config.GAME_TIMEOUT} secondes, à vos marques, prêt`
       );
     }
-  }, [props.isStarted]);
+  }, [props.isStarted, props.hasQuestion]);
 
   useEffect(() => {
     if (props.score > 0) {
@@ -45,13 +44,6 @@ const useScore = (props) => {
       setInfoColor("warning");
     }
   }, [props.highScore]);
-
-  useEffect(() => {
-    if (!props.hasQuestion) {
-      setInfo(`Plus de question en stock...`);
-      setInfoColor("warning");
-    }
-  }, [props.hasQuestion]);
 
   return [info, infoColor];
 };
