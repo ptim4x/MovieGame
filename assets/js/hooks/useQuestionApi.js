@@ -1,18 +1,22 @@
 import { useState, useEffect } from "react";
 import apiGame from "../services/ApiGame";
+import useImagesLoading from "./useImagesLoading";
 
 /**
  * Hook to manage Question from API
  *
- * @returns array with value, fetcher and replyier
+ * @returns array with value, loading infos, fetcher and replyier
  */
 const useQuestionApi = (winGame, looseGame, stopGame) => {
   const [question, setQuestion] = useState({});
+  const [questionLoading, setQuestionLoading] = useState({});
+  const [isLoading, loadedCount, setImagesLoading] = useImagesLoading();
   const [hasQuestion, setHasQuestion] = useState(false);
 
-  // Fetch a new question
+  // Set the new question and preload the next question
   const refetchQuestion = () => {
-    apiGame.getNewQuestion().then((result) => setQuestion(result));
+    setQuestion(questionLoading);
+    apiGame.getNewQuestion().then((result) => setQuestionLoading(result));
   };
 
   // Player reply to the question
@@ -29,7 +33,7 @@ const useQuestionApi = (winGame, looseGame, stopGame) => {
         looseGame();
       }
 
-      // Fetch a new question
+      // Set the new question and preload the next question
       refetchQuestion();
     });
   };
@@ -41,15 +45,24 @@ const useQuestionApi = (winGame, looseGame, stopGame) => {
 
   useEffect(() => {
     // No more question
-    if (null === question) {
+    if (null === questionLoading) {
       setHasQuestion(false);
       stopGame();
-    } else if (question.actor !== undefined) {
+    } else if (questionLoading.actor !== undefined) {
       setHasQuestion(true);
+      // Preload images
+      setImagesLoading([questionLoading.actor.img, questionLoading.movie.img]);
     }
-  }, [question]);
+  }, [questionLoading]);
 
-  return [question, hasQuestion, refetchQuestion, replyQuestion];
+  return [
+    question,
+    hasQuestion,
+    isLoading,
+    loadedCount,
+    refetchQuestion,
+    replyQuestion,
+  ];
 };
 
 export default useQuestionApi;

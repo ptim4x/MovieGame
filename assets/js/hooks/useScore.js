@@ -9,20 +9,32 @@ const useScore = (props) => {
   const [infoColor, setInfoColor] = useState("info");
 
   useEffect(() => {
-    setInfoColor("info"); // color reboot
+    // color reboot
+    setInfoColor("info");
+
     if (!props.hasQuestion) {
+      // No question anymore
       setInfo(`Plus de question en stock...`);
       setInfoColor("warning");
     } else if (props.isStarted) {
+      // Game just start
       setInfo("Goooooooooooo !");
     } else if (props.looseScore > 0 || props.score > 0) {
+      // Game just end and player has played
       setInfo("Aller on se motive pour battre le record");
     } else {
-      setInfo(
-        `Le jeu dure ${config.GAME_TIMEOUT} secondes, à vos marques, prêt`
-      );
+      // Initial state game
+      if (props.loadedCount === 0) {
+        setInfo(`Le jeu dure ${config.GAME_TIMEOUT} secondes`);
+      }
+      if (props.loadedCount === 1) {
+        setInfo((info) => info + `, à vos marques`);
+      }
+      if (props.loadedCount === 2) {
+        setInfo((info) => info + `, prêt`);
+      }
     }
-  }, [props.isStarted, props.hasQuestion]);
+  }, [props.isStarted, props.hasQuestion, props.loadedCount]);
 
   useEffect(() => {
     if (props.score > 0) {

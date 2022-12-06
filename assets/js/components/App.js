@@ -13,11 +13,14 @@ const App = () => {
   const [isStarted, score, looseScore, highScore, start, stop, win, loose] =
     useGame();
 
-  const [question, hasQuestion, replyQuestion] = useQuestionApi(
-    win,
-    loose,
-    stop
-  );
+  const [
+    question,
+    hasQuestion,
+    isLoading,
+    loadedCount,
+    refetchQuestion,
+    replyQuestion,
+  ] = useQuestionApi(win, loose, stop);
 
   return (
     <div className="container align-center">
@@ -33,11 +36,18 @@ const App = () => {
           highScore={highScore}
           isStarted={isStarted}
           hasQuestion={hasQuestion}
+          loadedCount={loadedCount}
         />
         {isStarted ? (
-          <Game question={question} replyQuestion={replyQuestion} stop={stop} />
+          <Game
+            question={question}
+            refetchQuestion={refetchQuestion}
+            replyQuestion={replyQuestion}
+            stop={stop}
+          />
         ) : hasQuestion ? (
           <Start
+            loading={isLoading}
             title={score + looseScore > 0 ? "Rejouer" : "Jouer"}
             start={start}
           />

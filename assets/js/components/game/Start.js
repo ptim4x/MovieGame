@@ -1,6 +1,7 @@
 import React from "react";
 import useKeyboardShortcutRef from "../../hooks/useKeyboardShortcutRef";
 import config from "../../config.json";
+import ReactLoading from "react-loading";
 
 /**
  * Start/Restart game component
@@ -11,14 +12,18 @@ const Start = (props) => {
 
   return (
     <section className="d-flex justify-content-center mt-4">
-      <button
-        ref={playRef}
-        type="button"
-        className="btn btn-lg btn-secondary col-6 py-5"
-        onClick={props.start}
-      >
-        {props.title}
-      </button>
+      {props.loading ? (
+        <ReactLoading type="cylon" color="lightgray" />
+      ) : (
+        <button
+          ref={playRef}
+          type="button"
+          className="btn btn-lg btn-secondary col-6 py-5"
+          onClick={props.start}
+        >
+          {props.title}
+        </button>
+      )}
     </section>
   );
 };

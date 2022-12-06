@@ -10,7 +10,18 @@ import Timer from "./Timer";
  *  - Timer countdown
  */
 const Game = (props) => {
+  // No question anymore
   if (null === props.question) {
+    return;
+  }
+
+  // Set the new question and preload the next question
+  useEffect(() => {
+    props.refetchQuestion();
+  }, []);
+
+  // Question not already loaded
+  if (props.question.actor === undefined) {
     return;
   }
 
