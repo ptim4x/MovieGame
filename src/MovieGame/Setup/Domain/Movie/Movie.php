@@ -36,6 +36,28 @@ class Movie
     /** @var Actor[] Actors who perform in it */
     private array $actors;
 
+    /**
+     * @return array<string, string>
+     */
+    public function __serialize(): array
+    {
+        return [
+            'title' => $this->title,
+            'picture' => $this->picture,
+        ];
+    }
+
+    /**
+     * @param array<string, string> $data
+     */
+    public function __unserialize(array $data): void
+    {
+        [
+            'title' => $this->title,
+            'picture' => $this->picture,
+        ] = $data;
+    }
+
     public function getExternalId(): int
     {
         return $this->external_id;

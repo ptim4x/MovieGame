@@ -72,6 +72,15 @@ services:
       # - ./docker/db/data:/var/lib/postgresql/data:rw
 ###< doctrine/doctrine-bundle ###
 
+  cache:
+    image: "redis:alpine"
+    hostname: redis
+    command: redis-server --requirepass ${REDIS_PASS:-tylerdurden}
+    volumes:
+      - cache-data:/data
+    ports:
+      - "6379:6379"
+
 volumes:
   php_socket:
   caddy_data:
@@ -82,3 +91,4 @@ volumes:
 ###> doctrine/doctrine-bundle ###
   db-data:
 ###< doctrine/doctrine-bundle ###
+  cache-data:

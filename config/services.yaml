@@ -28,14 +28,31 @@ services:
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
 
-    app.doctrine.question.repository:
-        class: App\MovieGame\Setup\Infrastructure\Storage\Doctrine\DoctrineQuestionRepository
-
-    App\MovieGame\Setup\Domain\Question\QuestionService:
-        arguments: 
-            - '%kernel.environment%'
-            - '@app.doctrine.question.repository'
-
     App\MovieGame\Setup\Infrastructure\Api\Tmdb\TheMovieDbApi:
         arguments: 
             $apiPhotoBaseUri: '%tmdb.images.url%'
+
+    app.question.doctrine.repository:
+        class: App\MovieGame\Setup\Infrastructure\Storage\Doctrine\DoctrineQuestionRepository
+
+    app.question.predis.repository:
+        class: App\MovieGame\Setup\Infrastructure\Storage\Redis\PredisQuestionRepository
+
+    app.game.doctrine.repository:
+        class: App\MovieGame\Play\Infrastructure\Storage\Doctrine\DoctrineGameRepository
+
+    app.game.predis.repository:
+        class: App\MovieGame\Play\Infrastructure\Storage\Redis\PredisGameRepository
+
+    # Question game setup as Redis storage
+    # Could be changed easily here by replacing .predis. by .doctrine.
+    App\MovieGame\Setup\Domain\Question\QuestionRepositoryInterface: '@app.question.predis.repository'
+    App\MovieGame\Play\Domain\Game\GameRepositoryInterface: '@app.game.predis.repository'
+
+    # useful only for PredisQuestionRepository and PredisGameRepository
+    Predis\Client:
+        class: \Predis\Client
+        arguments:
+            - host: '%env(REDIS_HOST)%'
+              port: '%env(int:REDIS_PORT)%'
+              password: '%env(REDIS_PASSWORD)%'
