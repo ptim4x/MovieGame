@@ -16,7 +16,6 @@ use App\MovieGame\Setup\Domain\Movie\Movie;
 class QuestionService
 {
     public function __construct(
-        private string $env,
         private QuestionRepositoryInterface $questionRepository
     ) {
     }

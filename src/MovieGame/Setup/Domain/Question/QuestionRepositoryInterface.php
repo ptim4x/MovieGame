@@ -23,14 +23,4 @@ interface QuestionRepositoryInterface
      * @param Question[] $questions
      */
     public function storeMany(array $questions): void;
-
-    /**
-     * Remove a question from database.
-     */
-    public function remove(Question $question): void;
-
-    /**
-     * Is the question exists ?
-     */
-    public function exists(Question $question): bool;
 }
