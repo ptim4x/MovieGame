@@ -61,6 +61,12 @@ Basically, you can run Compose V2 using `docker compose`, instead of `docker-com
 
 * v0.1 : First working version.
 * v0.2 : Improve react-ivity beetween rounds by preloading images.
+* v0.3 (in progress) : Add Redis storage implementation in replacement of doctrine, 3 ways redis support will be implemented :
+
+        1. Predis client service=done
+        2. Symfony cache contracts=in progress
+        3. PSR6=in progress
+
 
 ## Credits
 
